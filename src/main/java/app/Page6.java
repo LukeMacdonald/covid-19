@@ -47,15 +47,13 @@ public class Page6 implements Handler {
         JDBCConnection jdbc = new JDBCConnection();
 
         // Next we will ask this *class* for the movies
-        ArrayList<String> movies = jdbc.getMovies();
+       
 
         // Add HTML for the movies list
         html = html + "<h1>Movies</h1>" + "<ul>";
 
         // Finally we can print out all of the movies
-        for (String movie : movies) {
-            html = html + "<li>" + movie + "</li>";
-        }
+        
 
         // Finish the List HTML
         html = html + "</ul>";

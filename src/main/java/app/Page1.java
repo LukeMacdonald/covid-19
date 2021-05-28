@@ -1,71 +1,53 @@
 package app;
 
-import java.util.ArrayList;
+
 
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 
-/**
- * Temporary HTML as an example page.
- * 
- * Based on the Project Workshop code examples.
- * This page currently:
- *  - Provides a link back to the index page
- *  - Displays the list of movies from the Movies Database using the JDBCConnection
- *
- * @author Timothy Wiley, 2021. email: timothy.wiley@rmit.edu.au
- * @author Santha Sumanasekara, 2021. email: santha.sumanasekara@rmit.edu.au
- */
 public class Page1 implements Handler {
 
-    // URL of this page relative to http://localhost:7000/
+   
     public static final String URL = "/page1.html";
 
     @Override
     public void handle(Context context) throws Exception {
-        // Create a simple HTML webpage in a String
+      
         String html = "<html>";
 
-        // Add some Header information
+    
         html = html + "<head>" + 
                "<title>Movies</title>";
 
-        // Add some CSS (external file)
+       
         html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
 
-        // Add the body
+       
         html = html + "<body>";
 
-        // Add HTML for link back to the homepage
-        html = html + "<h1>Page 1</h1>";
-        html = html + "<p>Return to Homepage: ";
-        html = html + "<a href='/'>Link to Homepage</a>";
-        html = html + "</p>";
+        html = html + "<div id='navbarH'>";
+        html = html + " <a href='/page1.html'>Home</a>";
+        html = html + "<a href = '/page2.html'>Facts</a>";
+        html = html + "<a href='/page3.html'>Infection Rates</a>";
+        html = html + "<a href='/page4.html'>Death Rates</a>";
+        html = html + "<a href='/page5.html'>Cumulative Reports</a>";
+        html = html + "<a href='/page6.html'>Country Comparasion</a>";
+        html = html + "<a href='/worldmap1.html'>World Map</a>";
+        html = html + "</div>";
+        html = html + "<div class = 'index'>";
+        
+        html = html + "</div>";
+        html = html + "<div class = container>";
+        html = html + "<a href='/page2.html'><div class = facts>The Top COVID-19 Facts</div></a>";
+        html = html + "<a href='/page3.html'><div class = infect>Tracking Rate of Infection Throughout Countries</div></a>";
+        html = html + "<a href='/page4.html'><div class = death>Tracking Death Rate Throughout Countries</div></a>";
+        html = html + "<a href='/page5.html'><div class = cuml>The Deadly Progression of COVID-19</div></a>";
+        html = html + "<a href='/page6.html'><div class = comp >A Comparasion Between Countries</div></a>";
+        html = html + "</div>";
+        html = html + "<hr>";
+        html = html + "<div class = 'footer'></div>";
 
-        // Look up some information from JDBC
-        // First we need to use your JDBCConnection class
-        JDBCConnection jdbc = new JDBCConnection();
-
-        // Next we will ask this *class* for the movies
-        ArrayList<String> movies = jdbc.getMovies();
-
-        // Add HTML for the movies list
-        html = html + "<h1>Movies</h1>" + "<ul>";
-
-        // Finally we can print out all of the movies
-        for (String movie : movies) {
-            html = html + "<li>" + movie + "</li>";
-        }
-
-        // Finish the List HTML
-        html = html + "</ul>";
-
-        // Finish the HTML webpage
-        html = html + "</body>" + "</html>";
-
-
-        // DO NOT MODIFY THIS
-        // Makes Javalin render the webpage
+        html = html + "</body>" + "</html>";  
         context.html(html);
     }
 
