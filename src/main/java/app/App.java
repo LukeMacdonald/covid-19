@@ -32,6 +32,7 @@ public class App {
         app.get(GlobalInfect.URL, new GlobalInfect());
         app.get(Page4.URL, new Page4());
         app.get(Cumulative.URL, new Cumulative());
+        app.get(SimilarCountries.URL,new SimilarCountries());
         app.get(Page6.URL, new Page6());
         app.get(map.URL, new map());
 
@@ -42,6 +43,7 @@ public class App {
         app.post(GlobalInfect.URL, new GlobalInfect());
         app.post(Page4.URL, new Page4());
         app.post(Cumulative.URL, new Cumulative());
+        app.post(SimilarCountries.URL,new SimilarCountries());
         app.post(Page6.URL, new Page6());
     }
 

@@ -19,6 +19,7 @@ public class Home implements Handler {
         html = html + "<head>" + 
                "<title>Coronavirus</title>";
         html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
+        html = html + "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>";
 
         html = html + "<body>";
         html = html + "<div id='navbar'>";
@@ -36,11 +37,11 @@ public class Home implements Handler {
         
         html = html + "</div>";
         html = html + "<div class = container>";
-        html = html + "<a href='/page2.html'><div class = facts>The Top COVID-19 Facts</div></a>";
-        html = html + "<a href='/infection_global.html'><div class = infect>Tracking Rate of Infection Throughout Countries</div></a>";
-        html = html + "<a href='/page4.html'><div class = death>Tracking Death Rate Throughout Countries</div></a>";
-        html = html + "<a href='/cumulative_report.html'><div class = cuml>The Deadly Progression of COVID-19</div></a>";
-        html = html + "<a href='/page6.html'><div class = comp >A Comparasion Between Countries</div></a>";
+        html = html + "<a href='/page2.html'><div class = class='shadow p-4 mb-4 ' id = 'facts' >The Top COVID-19 Facts</div></a>";
+        html = html + "<a href='/infection_global.html'><div class = class='shadow p-4 mb-4 ' id = 'infect' >Tracking Rate of Infection Throughout Countries</div></a>";
+        html = html + "<a href='/page4.html'><div class='shadow p-4 mb-4 ' id = 'death' >Tracking Death Rate Throughout Countries</div></a>";
+        html = html + "<a href='/cumulative_report.html'><div class='shadow p-4 mb-4 ' id = 'cumul' >The Deadly Progression of COVID-19</div></a>";
+        html = html + "<a href='/page6.html'><div class='shadow p-4 mb-4 ' id = 'comp'  >A Comparasion Between Countries</div></a>";
         html = html + "</div>";
         html = html + "<hr>";
         html = html + "<div class = 'footer'></div>";

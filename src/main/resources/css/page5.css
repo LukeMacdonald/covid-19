@@ -84,14 +84,17 @@ form button{
     margin-top: 20px;
 	float:none;
 }
-#all_time,#last_days{
+#all_time,#last_days,#distance,#similar_clim{
 	width:20px;
 	height:20px;
 }
 #last_daysx{
 	width:fit-content
 }
-#all_time label,#last_days label{
+#distancex{
+	width:100px
+}
+#all_time label,#last_days label,#similar_clim,#distance{
 	padding-top:15px;
 }
 

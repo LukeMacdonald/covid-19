@@ -554,5 +554,104 @@ public class JDBCConnection {
             }
             return countries;
         }
+        public ArrayList<Double> getSimCountDis(String country,int distance) {
+            ArrayList<Double> distances = new ArrayList<Double>();
+            Connection connection = null;
+            try {
+                connection = DriverManager.getConnection(DATABASE);
+                Statement statement = connection.createStatement();
+                statement.setQueryTimeout(30);
+                String query = "SELECT * FROM Country WHERE cname = '"+country + "'"; 
+                ResultSet results = statement.executeQuery(query);
+                int lat = results.getInt("Latitude");
+                int longitude = results.getInt("Longitude");
+                String query2 = "SELECT * FROM("
+                    +"SELECT *,(((acos(sin(("+ lat + "*pi()/180)) * sin((Latitude*pi()/180))+cos(("+lat+"*pi()/180)) * cos((Latitude*pi()/180)) * cos((("+longitude + " - Longitude)*pi()/180))))*180/pi())*60*1.1515*1.609344) as distance FROM country)"
+                +"WHERE distance <=" + distance +" AND cname <> '"+ country + "' ORDER BY distance";
+                ResultSet results2 = statement.executeQuery(query2);
+               
+                while (results2.next()) {
+                    double totDistance = results2.getDouble("distance");
+                    distances.add(totDistance);
+                }
+                statement.close();
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+            } finally {
+                try {
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (SQLException e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+            return distances;
+        }
+        public ArrayList<String> getSimilarClimate(String country) {
+            ArrayList<String> countries = new ArrayList<String>();
+            Connection connection = null;
+            try {
+                connection = DriverManager.getConnection(DATABASE);
+                Statement statement = connection.createStatement();
+                statement.setQueryTimeout(30);
+                String query = "SELECT * FROM Country WHERE cname = '"+country + "'"; 
+                ResultSet results = statement.executeQuery(query);
+                int lat = results.getInt("Latitude");
+                String query2 = "SELECT * FROM Country WHERE cname <> '"+ country + "' ORDER BY ABS(" + lat + " - latitude) ASC LIMIT 5";
+                ResultSet results2 = statement.executeQuery(query2);
+               
+                while (results2.next()) {
+                    String countryName = results2.getString("cname");
+                    countries.add(countryName);
+                }
+                statement.close();
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+            } finally {
+                try {
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (SQLException e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+            return countries;
+        }
+        public ArrayList<Double> getSimClimDis(String country) {
+            ArrayList<Double> distances = new ArrayList<Double>();
+            Connection connection = null;
+            try {
+                connection = DriverManager.getConnection(DATABASE);
+                Statement statement = connection.createStatement();
+                statement.setQueryTimeout(30);
+                String query = "SELECT * FROM Country WHERE cname = '"+ country + "'"; 
+                ResultSet results = statement.executeQuery(query);
+                int lat = results.getInt("Latitude");
+                int longitude = results.getInt("Longitude");
+                String query2 = "SELECT * FROM("
+                    +"SELECT *,(((acos(sin(("+ lat + "*pi()/180)) * sin((Latitude*pi()/180))+cos(("+lat+"*pi()/180)) * cos((Latitude*pi()/180)) * cos((("+longitude + " - Longitude)*pi()/180))))*180/pi())*60*1.1515*1.609344) as distance FROM country)"
+                +"WHERE cname <> '"+ country + "' ORDER BY ABS(" + lat + " - latitude) ASC LIMIT 5";
+                ResultSet results2 = statement.executeQuery(query2);
+               
+                while (results2.next()) {
+                    double totDistance = results2.getDouble("distance");
+                    distances.add(totDistance);
+                }
+                statement.close();
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+            } finally {
+                try {
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (SQLException e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+            return distances;
+        }
 
 }

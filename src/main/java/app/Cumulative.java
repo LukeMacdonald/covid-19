@@ -46,12 +46,12 @@ public class Cumulative implements Handler {
         
         html = html + "<div class = 'title'>" + "<p style = 'font-size:12px;margin-top:-5px'><a href = '/'>Home</a> > <a href = '/cumulative_report.html'>Cumulative Report</a></p>"; 
         html = html + "<h1>THE CUMULATIVE REPORT OF COVID-19</h1>";
-        html = html + "<h5 style = 'position: relative; left: 2%; width: 600px'>This page provides updates about the current situation,"
-                           + "latest case numbers and related information.</h5>";
+        html = html + "<h5 style = 'position: relative; left: 2%; width: 600px'>This page provides culmutive reports for each country about,"
+                    + "the total case and death numbers.</h5>";
         html = html + "</div>";
         html = html + "<div id='navbar2'>";
-        html = html + " <a href='/infection_global.html' style = 'background-color: rgb(241, 241, 241)'>Cumulative Report per Country</a>";
-        html = html + " <a href='/infection_global.html'>Similar Countries</a>";
+        html = html + " <a href='/cumulative_report.html' style = 'background-color: rgb(241, 241, 241)'>Cumulative Report per Country</a>";
+        html = html + " <a href='/similarcountries.html'>Similar Countries</a>";
         html = html + "</div>";
         html = html + "<div id = 'clear'></div>";
         
@@ -186,10 +186,6 @@ public class Cumulative implements Handler {
     }
 
 }
-
-        /*ArrayList<String>SimilarCountries = jdbc.getSimilarCountries("US", 4000);
-        for(int i = 0; i < SimilarCountries.size();i++){
-            System.out.println(SimilarCountries.get(i));*/
         
 
 
