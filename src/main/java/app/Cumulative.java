@@ -35,12 +35,12 @@ public class Cumulative implements Handler {
        
         html = html + "<body>";
         html = html + "<div id='navbar'>";
-        html = html + " <a href='/'>Home</a>";
-        html = html + "<a href = '/page2.html'>Facts</a>";
+        html = html + "<a href='/'>Home</a>";
+        html = html + "<a href='/covidfacts.html'>Facts</a>";
         html = html + "<a href='/infection_global.html'>Infection Rates</a>";
-        html = html + "<a href='/page4.html'>Death Rates</a>";
-        html = html + "<a href='/cumulative_report.html' style = 'background-color:#3189af;'>Cumulative Reports</a>";
-        html = html + "<a href='/page6.html'>Country Comparasion</a>";
+        html = html + "<a href='/countrydeaths.html'>Death Rates</a>";
+        html = html + "<a href='/cumulative_report.html'style = 'background-color:#3189af'>Cumulative Reports</a>";
+        html = html + "<a href='/comparecountries.html' >Country Comparison</a>";
         html = html + "<a href='/worldmap1.html'>World Map</a>";
         html = html + "</div>";
         
