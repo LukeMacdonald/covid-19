@@ -16,10 +16,10 @@ import io.javalin.http.Handler;
  * @author Timothy Wiley, 2021. email: timothy.wiley@rmit.edu.au
  * @author Santha Sumanasekara, 2021. email: santha.sumanasekara@rmit.edu.au
  */
-public class CountryDeaths implements Handler {
+public class StateDeaths implements Handler {
 
     // URL of this page relative to http://localhost:7000/
-    public static final String URL = "/countrydeaths.html";
+    public static final String URL = "/statedeaths.html";
 
     @Override
     public void handle(Context context) throws Exception {
@@ -29,7 +29,7 @@ public class CountryDeaths implements Handler {
 
         // Add some Header information
         html = html + "<head>" + 
-               "<title>Deaths by Country</title>" +
+               "<title>Deaths by State</title>" +
                "<link rel=\"shortcut icon\" type=\"image/png\" href=\"covidlogo.png\"/>";
 
         // Add some CSS (external file)
@@ -49,15 +49,15 @@ public class CountryDeaths implements Handler {
         html = html + "<a href='/worldmap1.html'>World Map</a>";
         html = html + "</div>";
         //header
-        html = html + "<div class = 'title2'>" + "<p style = 'font-size:12px;margin-top:-5px;text-align:left'><a href = '/'>Home</a> > <a href = '/countrydeaths.html'>Deaths by Country</a></p>"; 
-        html = html + "<h1>Global Deaths by Country</h1>";
-        html = html + "<h5>Select a country below to view deaths and related information</h5>";
+        html = html + "<div class = 'title2'>" + "<p style = 'font-size:12px;margin-top:-5px;text-align:left'><a href = '/'>Home</a> > <a href = '/countrydeaths.html'>Deaths by Country</a> > <a href = '/statedeaths.html'> Deaths by State</a></p>"; 
+        html = html + "<h1>Global Deaths by State</h1>";
+        html = html + "<h5>Select a state below to view deaths and related information</h5>";
         html = html + "</div>";
 
 
         JDBCConnection jdbc = new JDBCConnection();
 
-        ArrayList<String> countries = jdbc.getCountries();
+        ArrayList<String> states = jdbc.getStates();
 
         //form, including country selection
         // TODO: make ^ searchable
@@ -68,19 +68,19 @@ public class CountryDeaths implements Handler {
 
         //navbar to switch between states and countries
         html = html + "<div id='navbar2'>";
-        html = html + " <a href='/countrydeaths.html' style = 'background-color: rgb(241, 241, 241)'>Deaths by Country</a>";
-        html = html + " <a href='/statedeaths.html'>Deaths by State</a>";
+        html = html + " <a href='/countrydeaths.html' >Deaths by Country</a>";
+        html = html + " <a href='/statedeaths.html'style = 'background-color: rgb(241, 241, 241)'>Deaths by State</a>";
         html = html + "</div>";
         html = html + "<div id = 'clear'></div>";
 
-            html = html + "<form action='/countrydeaths.html' method='post'>";
+            html = html + "<form action='/statedeaths.html' method='post'>";
                 
             //TODO: add way to switch between selecting states/regions and countries
-                html = html + "<label for='country_drop' id = 'label1'>Select Country: </label><br>";
-                html = html + "<select id='country_drop' name='country_drop' value = 'Australia'>";
-                html = html + "    <option selected disabled>Select a Country...</option>";
-                for(int i = 0; i < countries.size();i++){
-                    html = html + "<option >" + countries.get(i) + "</option>";
+                html = html + "<label for='country_drop' id = 'label1'>Select State: </label><br>";
+                html = html + "<select id='country_drop' name='country_drop' value = 'Victoria'>";
+                html = html + "    <option selected disabled>Select a State...</option>";
+                for(int i = 0; i < states.size();i++){
+                    html = html + "<option >" + states.get(i) + "</option>";
                 }
                 html = html + "</select><br>";
                 
@@ -113,7 +113,7 @@ public class CountryDeaths implements Handler {
         else {
 
             // ArrayList<Integer> countryTotalDeaths = jdbc.countryTotalDeaths(country_drop);
-            ArrayList<String> highestDeathDay = jdbc.highestDeathDay(country_drop);
+            ArrayList<String> highestDeathDayState = jdbc.highestDeathDayState(country_drop);
             // ArrayList<Float> countryDeathRate = jdbc.countryDeathRate(country_drop);
 
                 html = html + "<div id='results-flex-container'>";
@@ -128,9 +128,9 @@ public class CountryDeaths implements Handler {
                 html = html + "<div id='div1'>";
                     String startDate = context.formParam("startDate");
                     String endDate = context.formParam("endDate");
-                    ArrayList<Float> countryDeathsDateRange = jdbc.getDeathsDateRange(startDate, endDate, country_drop);
-                        float noDeathsDateRange = countryDeathsDateRange.get(0);
-                        float noCasesDateRange = countryDeathsDateRange.get(1);
+                    ArrayList<Float> stateDeathsDateRange = jdbc.getDeathsDateRangeState(startDate, endDate, country_drop);
+                        float noDeathsDateRange = stateDeathsDateRange.get(0);
+                        float noCasesDateRange = stateDeathsDateRange.get(1);
                         float deathRateDateRange = noDeathsDateRange / noCasesDateRange * 100;
                         
                     html = html + "<p>Total deaths in date range: </p>";
@@ -146,12 +146,12 @@ public class CountryDeaths implements Handler {
                     //highest recorded deaths in a day
                     html = html + "<p>Highest recorded deaths in a day: </p>";
                     
-                        html = html + highestDeathDay.get(0);
+                        html = html + highestDeathDayState.get(0);
                     
                     //date of highest recorded deaths
                     html = html + "<p>Date of highest recorded deaths: </p>";
 
-                        html = html + highestDeathDay.get(1);
+                        html = html + highestDeathDayState.get(1);
                 
                     //ends div3
                 html = html + "</div>";

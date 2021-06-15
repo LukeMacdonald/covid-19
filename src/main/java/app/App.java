@@ -39,6 +39,7 @@ public class App {
         //doms pages
         app.get(CovidFacts.URL, new CovidFacts());
         app.get(CountryDeaths.URL, new CountryDeaths());
+        app.get(StateDeaths.URL, new StateDeaths());
         app.get(CompareCountries.URL, new CompareCountries());
         app.get(CompareCountriesAdvanced.URL, new CompareCountriesAdvanced());
 
@@ -55,6 +56,7 @@ public class App {
 
         //doms pages
         app.post(CountryDeaths.URL, new CountryDeaths());
+        app.post(StateDeaths.URL, new StateDeaths());
         app.post(CompareCountries.URL, new CompareCountries());
         app.post(CompareCountriesAdvanced.URL, new CompareCountriesAdvanced());
     }

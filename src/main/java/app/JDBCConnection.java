@@ -798,7 +798,7 @@ public class JDBCConnection {
     }
 
     // return total number of deaths globally 
-    public ArrayList<Integer> countryTotalDeaths(String country) {
+    public Integer countryTotalDeaths(String country) {
         ArrayList<Integer> covid = new ArrayList<Integer>();
 
         // Setup the variable for the JDBC connection
@@ -848,8 +848,9 @@ public class JDBCConnection {
             }
         }
 
+        Integer noDeaths = covid.get(0);
         //return the integer list containing all values of 'nodeaths' 
-        return covid;
+        return noDeaths;
     }
 
     //this adds all cases within each country and orders them in an arraylist by number of cases
@@ -1023,7 +1024,7 @@ public class JDBCConnection {
         return covid;
     }
 
-    //return value of most deaths on a day (index 0) and the date of highest deaths (index 1)
+    //return value of most deaths on a day (index 0) and the date of highest deaths (index 1) for countries
     public ArrayList<String> highestDeathDay(String country) {
         ArrayList<String> covid = new ArrayList<String>();
 
@@ -1040,6 +1041,62 @@ public class JDBCConnection {
 
             //The Query
             String query = "SELECT Date, MAX(noDeaths) FROM Country c JOIN CountryCases cc ON cc.CountryID = c.CountryID WHERE c.cname='" + country + "';";
+            
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            // The "results" variable is similar to an array
+            // We can iterate through all of the database query results
+            while (results.next()) {
+                // We can lookup a column of the a single record in the
+                // result using the column name
+                // BUT, we must be careful of the column type!
+                String noDeaths = results.getString("MAX(NoDeaths)");
+                String date = results.getString("Date");
+
+                covid.add(noDeaths);
+                covid.add(date);
+            }
+            
+            // Close the statement because we are done with it
+            statement.close();
+        } catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        //return the integer list containing all values of 'nodeaths' 
+        return covid;
+    }
+
+    ////return value of most deaths on a day (index 0) and the date of highest deaths (index 1) for states
+    public ArrayList<String> highestDeathDayState(String state) {
+        ArrayList<String> covid = new ArrayList<String>();
+
+        // Setup the variable for the JDBC connection
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            //The Query
+            String query = "SELECT Date, MAX(noDeaths) FROM State s JOIN StateCount sc ON sc.StateID = s.StateID WHERE s.sname='" + state + "';";
             
             // Get Result
             ResultSet results = statement.executeQuery(query);
@@ -1189,9 +1246,64 @@ public class JDBCConnection {
         return covid;
     }  
 
-    //doesnt work rn
-    public ArrayList<Float> getSimilarDeathRate(String country) {
+    ////this retrieves the total deaths of a specified state within a date range
+    public ArrayList<Float> getDeathsDateRangeState(String startDate, String endDate, String state) {
         ArrayList<Float> covid = new ArrayList<Float>();
+
+        // Setup the variable for the JDBC connection
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            //The Query
+            String query = "SELECT SUM(NoCases), SUM(NoDeaths) FROM State s JOIN StateCount sc ON sc.StateID = s.StateID WHERE s.sname='" + state + "' AND (date BETWEEN '"+ startDate + "' AND '"+ endDate + "');";
+            
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            // The "results" variable is similar to an array
+            // We can iterate through all of the database query results
+            while (results.next()) {
+                // We can lookup a column of the a single record in the
+                // result using the column name
+                // BUT, we must be careful of the column type!
+                float noDeaths = results.getFloat("SUM(NoDeaths)");
+                float noCases = results.getFloat("SUM(NoCases)");
+
+                covid.add(noDeaths);
+                covid.add(noCases);
+            }
+            
+            // Close the statement because we are done with it
+            statement.close();
+        } catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        return covid;
+    }  
+
+    //works now. gets the 3 most similar death rates to the selected input country
+    public ArrayList<String> getSimilarDeathRate(String country) {
+        ArrayList<String> covid = new ArrayList<String>();
 
         // Setup the variable for the JDBC connection
         Connection connection = null;
@@ -1206,30 +1318,236 @@ public class JDBCConnection {
 
             //sort by determining index of selected country, then use the indexes around that value
             String query = "SELECT (SUM(cc.NoDeaths) * 1.0 / SUM(cc.NoCases) * 100) AS \"DeathRate\" FROM CountryCases cc JOIN Country c ON c.countryID = cc.countryID WHERE c.cname='" + country + "';";
-            // ResultSet results2 = statement.executeQuery(query);
-            // Float selectedCountryDeathRate = (results2.getFloat("DeathRate"));
+                ResultSet results = statement.executeQuery(query);
+                Float selectedCountryDeathRate = (results.getFloat("DeathRate"));
+                System.out.println(selectedCountryDeathRate);
 
-            //TODO: i dont know what to do uhuhuhuhuhhhh but try what luke said
+        
 
             //The Query
-            query = "SELECT c.Cname, SUM(cc.NoDeaths) AS \"NoDeaths\", SUM(cc.NoCases) AS \"NoCases\", SUM(cc.NoDeaths) * 1.0 / SUM(cc.NoCases) * 100 AS \"DeathRate\" FROM CountryCases cc JOIN Country c ON c.countryID = cc.countryID GROUP BY cc.countryID ORDER BY DeathRate DESC;";
+            String query2 = "SELECT c.Cname, SUM(cc.NoDeaths) AS \"NoDeaths\", SUM(cc.NoCases) AS \"NoCases\", SUM(NoDeaths) * 1.0 / SUM(NoCases) * 100 AS \"DeathRate\"" +
+                            "FROM CountryCases cc JOIN Country c ON c.countryID = cc.countryID GROUP BY cc.countryID ORDER BY ABS(" + selectedCountryDeathRate + " * 1.0 - DeathRate) ASC LIMIT 4;";
             
             // Get Result
-            ResultSet results = statement.executeQuery(query);
+            ResultSet results2 = statement.executeQuery(query2);
 
             // Process all of the results
             // The "results" variable is similar to an array
             // We can iterate through all of the database query results
-            while (results.next()) {
+            while (results2.next()) {
                 // We can lookup a column of the a single record in the
                 // result using the column name
                 // BUT, we must be careful of the column type!
 
-                float deathRate = results.getFloat("DeathRate");
+                String deathRate = results2.getString("DeathRate");
+                String Cname = results2.getString("Cname");
 
+                covid.add(Cname);
                 covid.add(deathRate);
 
-                // System.out.println(deathRate);
+                System.out.println(deathRate);
+            }
+
+            
+            // Close the statement because we are done with it
+            statement.close();
+        } catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        return covid;
+    }
+
+    //copy of getSimilarDeathRate. Requires editing
+    public ArrayList<String> getSimilarCases(String country) {
+        ArrayList<String> covid = new ArrayList<String>();
+
+        // Setup the variable for the JDBC connection
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            //sort by determining index of selected country, then use the indexes around that value
+            String query = "SELECT (SUM(cc.NoDeaths) * 1.0 / SUM(cc.NoCases) * 100) AS \"DeathRate\" FROM CountryCases cc JOIN Country c ON c.countryID = cc.countryID WHERE c.cname='" + country + "';";
+                ResultSet results = statement.executeQuery(query);
+                Float selectedCountryDeathRate = (results.getFloat("DeathRate"));
+                System.out.println(selectedCountryDeathRate);
+
+
+            //The Query
+            String query2 = "SELECT c.Cname, SUM(cc.NoDeaths) AS \"NoDeaths\", SUM(cc.NoCases) AS \"NoCases\", SUM(NoDeaths) * 1.0 / SUM(NoCases) * 100 AS \"DeathRate\"" +
+                            "FROM CountryCases cc JOIN Country c ON c.countryID = cc.countryID GROUP BY cc.countryID ORDER BY ABS(" + selectedCountryDeathRate + " * 1.0 - DeathRate) ASC LIMIT 4;";
+            
+            // Get Result
+            ResultSet results2 = statement.executeQuery(query2);
+
+            // Process all of the results
+            // The "results" variable is similar to an array
+            // We can iterate through all of the database query results
+            while (results2.next()) {
+                // We can lookup a column of the a single record in the
+                // result using the column name
+                // BUT, we must be careful of the column type!
+
+                String deathRate = results2.getString("DeathRate");
+                String Cname = results2.getString("Cname");
+
+                covid.add(Cname);
+                covid.add(deathRate);
+
+                System.out.println(deathRate);
+            }
+
+            
+            // Close the statement because we are done with it
+            statement.close();
+        } catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        return covid;
+    }
+
+    //copy of getSimilarDeathRate. Requires editing
+    public ArrayList<String> getSimilarDeaths(String country) {
+        ArrayList<String> covid = new ArrayList<String>();
+
+        // Setup the variable for the JDBC connection
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            //sort by determining index of selected country, then use the indexes around that value
+            String query = "SELECT (SUM(cc.NoDeaths) * 1.0 / SUM(cc.NoCases) * 100) AS \"DeathRate\" FROM CountryCases cc JOIN Country c ON c.countryID = cc.countryID WHERE c.cname='" + country + "';";
+                ResultSet results = statement.executeQuery(query);
+                Float selectedCountryDeathRate = (results.getFloat("DeathRate"));
+                System.out.println(selectedCountryDeathRate);
+
+
+            //The Query
+            String query2 = "SELECT c.Cname, SUM(cc.NoDeaths) AS \"NoDeaths\", SUM(cc.NoCases) AS \"NoCases\", SUM(NoDeaths) * 1.0 / SUM(NoCases) * 100 AS \"DeathRate\"" +
+                            "FROM CountryCases cc JOIN Country c ON c.countryID = cc.countryID GROUP BY cc.countryID ORDER BY ABS(" + selectedCountryDeathRate + " * 1.0 - DeathRate) ASC LIMIT 4;";
+            
+            // Get Result
+            ResultSet results2 = statement.executeQuery(query2);
+
+            // Process all of the results
+            // The "results" variable is similar to an array
+            // We can iterate through all of the database query results
+            while (results2.next()) {
+                // We can lookup a column of the a single record in the
+                // result using the column name
+                // BUT, we must be careful of the column type!
+
+                String deathRate = results2.getString("DeathRate");
+                String Cname = results2.getString("Cname");
+
+                covid.add(Cname);
+                covid.add(deathRate);
+
+                System.out.println(deathRate);
+            }
+
+            
+            // Close the statement because we are done with it
+            statement.close();
+        } catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        return covid;
+    }
+
+    //copy of getSimilarDeathRate. Requires editing
+    public ArrayList<String> getSimilarHighestDeathDay(String country) {
+        ArrayList<String> covid = new ArrayList<String>();
+
+        // Setup the variable for the JDBC connection
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            //sort by determining index of selected country, then use the indexes around that value
+            String query = "SELECT (SUM(cc.NoDeaths) * 1.0 / SUM(cc.NoCases) * 100) AS \"DeathRate\" FROM CountryCases cc JOIN Country c ON c.countryID = cc.countryID WHERE c.cname='" + country + "';";
+                ResultSet results = statement.executeQuery(query);
+                Float selectedCountryDeathRate = (results.getFloat("DeathRate"));
+                System.out.println(selectedCountryDeathRate);
+
+            
+
+            //The Query
+            String query2 = "SELECT c.Cname, SUM(cc.NoDeaths) AS \"NoDeaths\", SUM(cc.NoCases) AS \"NoCases\", SUM(NoDeaths) * 1.0 / SUM(NoCases) * 100 AS \"DeathRate\"" +
+                            "FROM CountryCases cc JOIN Country c ON c.countryID = cc.countryID GROUP BY cc.countryID ORDER BY ABS(" + selectedCountryDeathRate + " * 1.0 - DeathRate) ASC LIMIT 4;";
+            
+            // Get Result
+            ResultSet results2 = statement.executeQuery(query2);
+
+            // Process all of the results
+            // The "results" variable is similar to an array
+            // We can iterate through all of the database query results
+            while (results2.next()) {
+                // We can lookup a column of the a single record in the
+                // result using the column name
+                // BUT, we must be careful of the column type!
+
+                String deathRate = results2.getString("DeathRate");
+                String Cname = results2.getString("Cname");
+
+                covid.add(Cname);
+                covid.add(deathRate);
+
+                System.out.println(deathRate);
             }
 
             
