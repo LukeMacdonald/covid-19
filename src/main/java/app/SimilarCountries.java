@@ -80,7 +80,7 @@ public class SimilarCountries implements Handler {
         String country_drop = context.formParam("country_drop");
         String selection = context.formParam("select");
         String distance = context.formParam("distancex");
-        System.out.println(country_drop);
+       
        
         if(selection == null || (country_drop == null || country_drop.equals("select"))){
             html = html + "";

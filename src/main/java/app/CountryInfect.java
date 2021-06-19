@@ -18,11 +18,14 @@ public class CountryInfect implements Handler {
         html = html +"<title>Cases</title>";
         html = html + "<link rel='stylesheet' type='text/css' href='common.css'/>";
         html = html + "<meta name='viewport' content='width=device-width, initial-scale=1'>";
+        html = html + "<link rel=\"shortcut icon\" type=\"image/png\" href=\"covidlogo.png\"/>";
 
         html = html + "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>";
         html = html + "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>";
         html = html + "<link href='https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css' rel='stylesheet' />";
         html = html + "<script src='https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js'></script>";
+       
+       
    
         html = html + "<script>";
         //Creates a searchable dropdown menu
@@ -68,7 +71,7 @@ public class CountryInfect implements Handler {
         html = html + "<form class = action='/infection_country.html' method='post'>";
         html = html + " <div id = 'location_selector'>";
         html = html + "<label for='country_drop' id = 'label1'>Select Country:</label><br>";
-        html = html + "<select id='country_drop' name='country_drop' value = 'Australia'>";
+        html = html + "<select id='country_drop' name='country_drop' value = 'Australia' required>";
         html = html + "   <option selected disabled>Select a Country...</option>";
         for(int i = 0; i < countries.size();i++){
             html = html + "   <option >" + countries.get(i) + "</option>";
@@ -122,14 +125,16 @@ public class CountryInfect implements Handler {
             html = html + "<h4>Daily Reported Cases</h4>";
             html = html + "<p style = 'font-size: 15px'>This table shows the total number of new COVID-19 cases in Australia reported each day by individual Countries. The Data was collected from 22/01/2020 to 22/04/2021 .</p>";
             html = html + "<div class = 'table1'>";
-            html = html + "<table class = 'table table-bordered'>";
+            html = html + "<table class='table table-bordered'>";
             html = html + "<tr>";
             html = html + "</tr>";
             html = html + "<tr>";
-            html = html + "<th>Date</th>";
-            html = html + "<th>Total New Cases</th>";
+            html = html + "<th >Date</th>";
+            html = html + "<th >Total New Cases</th>";
             html = html + "</tr>";
+            
             for(int i = 0; i < dates.size();i++){
+    
             html = html + "<tr>";
             html = html + "<td style = 'font-size: 15px;'>" + dates.get(i) + "</td>";
             html = html + "<td style = 'font-size: 15px;'>" + allcases.get(i) + "</td>";

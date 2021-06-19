@@ -18,6 +18,7 @@ public class GlobalInfect implements Handler {
         
         html = html + "<head>";
         html = html +"<title>Cases</title>";
+        html = html + "<link rel=\"shortcut icon\" type=\"image/png\" href=\"covidlogo.png\"/>";
         html = html + "<link rel='stylesheet' type='text/css' href='common.css'/>";
         html = html + "<meta name='viewport' content='width=device-width, initial-scale=1'>";
         html = html + "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>";
@@ -63,7 +64,7 @@ public class GlobalInfect implements Handler {
         html = html + "<div id = 'clear'></div>";
         
         //Form
-        html = html + "<form class = action='/infection_global.html' method='post' style = 'height: 280px'>";
+        html = html + "<form class = action='/infection_global.html' method='post' >";
         html = html + " <div style = 'padding-top:20px' id = 'date_selector'>";
         html = html + " <label for = 'startDate'>Select Start Date:</label>";
         html = html + " <input class='form-control' type='date' id ='startDate' name='startDate' min = '2020-01-22' max = '2021-04-22' value = '2020-01-22'>";

@@ -18,6 +18,7 @@ public class Home implements Handler {
     
         html = html + "<head>" + 
                "<title>Coronavirus</title>";
+               html = html + "<link rel=\"shortcut icon\" type=\"image/png\" href=\"covidlogo.png\"/>";
         html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
         html = html + "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>";
 
@@ -34,17 +35,42 @@ public class Home implements Handler {
 
   
         html = html + "<div class = 'index'>";
-        
         html = html + "</div>";
         html = html + "<div class = container>";
-        html = html + "<a href='/covidfacts.html'><div class = class='shadow p-4 mb-4 ' id = 'facts' >The Top COVID-19 Facts</div></a>";
-        html = html + "<a href='/infection_global.html'><div class = class='shadow p-4 mb-4 ' id = 'infect' >Tracking Rate of Infection Throughout Countries</div></a>";
-        html = html + "<a href='/countrydeaths.html'><div class='shadow p-4 mb-4 ' id = 'death' >Tracking Death Rate Throughout Countries</div></a>";
-        html = html + "<a href='/cumulative_report.html'><div class='shadow p-4 mb-4 ' id = 'cumul' >The Deadly Progression of COVID-19</div></a>";
-        html = html + "<a href='/comparecountries.html'><div class='shadow p-4 mb-4 ' id = 'comp'  >A Comparasion Between Countries</div></a>";
+        html = html + "<div class='shadow p-4 mb-4 ' id = 'facts'>";
+        html = html + "<a href='/covidfacts.html'>The Top COVID-19 Facts</a>"; 
+        html = html + "<br>";
+        html = html + "<p> This page contains information regarding important facts relating to COVID-19. This includes the global number of cases, deaths and mortaility rates.</p>";
+        html = html + "</div>"; 
+        html = html + "<div class='shadow p-4 mb-4 ' id = 'infect'>";
+        html = html + "<a href='/infection_global.html'>Tracking Rate of Infection</a>";
+        html = html + "<br>";
+        html = html + "<p> This page contains information regarding the number of COVID-19 cases globally, per country and per state.</p>";
+        html = html + "<a href='/infection_global.html'style = 'font-size:14px;'>Global Infections</a>"; 
+        html = html + "<br>";
+        html = html + "<a href='/infection_country.html'style = 'font-size:14px;'>Country Infections</a>"; 
+        html = html + "<br>";
+        html = html + "<a href='/infection_state.html'style = 'font-size:14px;'>State/Province Infections</a>"; 
+        html = html + "</div>"; 
+        html = html + "<div class='shadow p-4 mb-4 ' id = 'death'>";
+        html = html + "<a href='/countrydeaths.html'>Tracking Death Rate</a>";
+        html = html + "<p> This page contains information regarding the number of COVID-19 deaths per country and per state.</p>"; 
+        html = html + "<br>";
+        html = html + "<a href='/countrydeaths.html'style = 'font-size:14px;'>Country Deaths</a>"; 
+        html = html + "<br>";
+        html = html + "<a href='/statedeaths.html'style = 'font-size:14px;'>State/Province Deaths</a>"; 
+        html = html + "</div>"; 
+        html = html + "<div class='shadow p-4 mb-4 ' id = 'cumul'>";
+        html = html + "<a href='/cumulative_report.html'>Viewing the Cumulative Data of COVID-19</a>"; 
+        html = html + "<p> This page contains information regarding the total number of COVID-19 cases and deaths and the calculated death rates and rate of infections for each country.</p>";
+        html = html + "<br>";
+        html = html + "<a href='/worldmap1.html'style = 'font-size:14px;'>View Global Map</a>";
+        html = html + "</div>"; 
+        html = html + "<div class='shadow p-4 mb-4 ' id = 'comp'>";
+        html = html + "<a href='/comparecountries.html'>A Comparasion Between Countries</a>"; 
+        html = html + "</div>"; 
         html = html + "</div>";
-        html = html + "<hr>";
-        html = html + "<div class = 'footer'></div>";
+       
 
         html = html + "</body>" + "</html>";  
         context.html(html);
