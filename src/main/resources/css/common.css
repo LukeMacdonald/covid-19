@@ -49,11 +49,11 @@ body
 	flex-wrap:wrap;
 	flex-direction: row;
 }
-.container p{
+.container p, .container ul{
 	font-size: 14px;
 }
 #infect,#cumul,#facts,#comp,#death{
-	height:250px;
+	height:280px;
 	border: 1px #000000;
 	
 	margin-top: 30px;
@@ -75,7 +75,6 @@ a:link,a:visited{
   /*Style for Infection Page*/
   .title{
 	padding-top: 70px;
-	font-size: 45px;
 	padding-bottom: 15px;
 	padding-left: 10px;
 	color: rgb(40, 48, 65);
@@ -253,7 +252,7 @@ body {
     font-size: 20px;
   }
   svg {
-    height: 600px;
+    height: 550px;
     width: 100%;
     margin-left: -40px;
   }
@@ -261,7 +260,7 @@ body {
     text-align: center;
     font-size: 25px;
     color: rgb(0, 0, 0);
-    margin-bottom: 50px;
+    margin-bottom: 20px;
   }
 
 /* DOMS STYLES */
@@ -318,7 +317,7 @@ body {
 #results-flex-container {
 	display: flex;
 	flex-wrap: wrap;
-	width:85%;
+	width:70%;
 	justify-content:space-evenly;
 	align-items:flex-start;
 	/* border:2px solid black; */
@@ -388,20 +387,6 @@ body {
 }
 
 /* header style for dom */
-.title2{
-	padding-top: 70px;
-	font-size: 20px;
-	padding-bottom: 15px;
-	padding-left: 10px;
-	color: rgb(40, 48, 65);
-	clear: both;
-	background-color: rgb(245, 245, 245);
-	border:2px solid #f1f1f1;
-	height: 22%;
-}
-	.title > h5{
-		text-align: center;
-	}
 
 /* .break is a class that can be assigned to a div to create a "break", forcing the next divs to the next row of the flex container */
 .break {

@@ -171,3 +171,13 @@ form button{
   .active:after {
 	content: "\2796"; /* Unicode character for "minus" sign (-) */
   }
+  .table1{
+	  overflow: scroll;
+	  width: 1000px;
+	  height: 600px
+  }
+  a:link,a:visited{
+	text-decoration: none;
+	color: #000000;
+	font-weight: bold;
+} 

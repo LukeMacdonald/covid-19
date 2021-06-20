@@ -26,12 +26,12 @@ public class GlobalInfect implements Handler {
    
         html = html + "<script>";
         
-        //Function to set the end dates min value to the start dates input
-        html = html + "function updatedate() {";
-        html = html + " var firstdate = document.getElementById('startDate').value;";
-        html = html + " document.getElementById('endDate').value = '';";
-        html = html + " document.getElementById('endDate').setAttribute('min',firstdate);";
-        html = html + "}";
+           //Function to set the end dates min value to the start dates input
+           html = html + "function updatedate() {";
+           html = html + " var firstdate = document.getElementById('startDate').value;";
+           html = html + " document.getElementById('endDate').value = '';";
+           html = html + " document.getElementById('endDate').setAttribute('min',firstdate);";
+           html = html + "}";
         html = html + "</script>";
         html = html + "</head>";
        
@@ -43,7 +43,7 @@ public class GlobalInfect implements Handler {
         html = html + "<a href='/covidfacts.html'>Facts</a>";
         html = html + "<a href='/infection_global.html' style = 'background-color:#3189af'>Infection Rates</a>";
         html = html + "<a href='/countrydeaths.html'>Death Rates</a>";
-        html = html + "<a href='/cumulative_report.html'>Cumulative Reports</a>";
+        html = html + "<a href='/cumalative_global.html'>Cumulative Reports</a>";
         html = html + "<a href='/comparecountries.html'>Country Comparison</a>";
         html = html + "<a href='/worldmap1.html'>World Map</a>";
         html = html + "</div>";
@@ -67,7 +67,7 @@ public class GlobalInfect implements Handler {
         html = html + "<form class = action='/infection_global.html' method='post' >";
         html = html + " <div style = 'padding-top:20px' id = 'date_selector'>";
         html = html + " <label for = 'startDate'>Select Start Date:</label>";
-        html = html + " <input class='form-control' type='date' id ='startDate' name='startDate' min = '2020-01-22' max = '2021-04-22' value = '2020-01-22'>";
+        html = html + " <input class='form-control' type='date' id ='startDate' name='startDate' onchange= 'updatedate()' min = '2020-01-22' max = '2021-04-22' value = '2020-01-22'>";
         html = html + "  <label for = 'endDate'>Select End Date:</label>";
         html = html + "  <input class='form-control' id='endDate' name='endDate' type = 'date' min = '2020-01-22' max = '2021-04-22' value = '2021-04-22'>";
         html = html + " <input class='form-control' type = 'radio' id ='all_time' name='date' value = 'allday' >";
@@ -104,7 +104,7 @@ public class GlobalInfect implements Handler {
             html = html + "<h4>" + dateGlobal + "</h4>";
             html = html + "</div>";
             html = html + "<h4>Infection Rates of Each Country</h4>";
-            html = html + "<p style = 'font-size: 15px; left: 2%'>The table below shows the total number of COVID-19 cases and the date when there was the greatest increase in cases in each country of the world during the specifed date range. The table can be sorted by either country name or by the number of cases by clicking on the columns header. Sorting by number of shows which countries have been most and least affected by COVID-19. This Data was collected from 22/01/2020 to 22/04/2021 .</p>";
+            html = html + "<p style = 'font-size: 15px; left: 2%'>The table below shows the total number of COVID-19 cases and the date when there was the greatest increase in cases in each country of the world during the specifed date range. The table can be sorted by either country name or by the number of cases by clicking on the columns header. Sorting by number of shows which countries have been most and least affected by COVID-19. This Data was collected from 22/01/2020 to 22/04/2021.<b> Click on table headers to sort data by that column<b></p>";
             html = html + "<div class = 'table4'>";
             html = html + "<table class='sortable, table table-bordered'>";
             html = html + "<tr>";

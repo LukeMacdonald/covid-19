@@ -46,7 +46,7 @@ public class StateInfections implements Handler {
         html = html + "<a href='/covidfacts.html'>Facts</a>";
         html = html + "<a href='/infection_global.html'style = 'background-color:#3189af'>Infection Rates</a>";
         html = html + "<a href='/countrydeaths.html'>Death Rates</a>";
-        html = html + "<a href='/cumulative_report.html'>Cumulative Reports</a>";
+        html = html + "<a href='/cumalative_global.html'>Cumulative Reports</a>";
         html = html + "<a href='/comparecountries.html'>Country Comparison</a>";
         html = html + "<a href='/worldmap1.html'>World Map</a>";
         html = html + "</div>";
@@ -99,8 +99,8 @@ public class StateInfections implements Handler {
             html = html + "";
         }
         else{
-            int cases1 = jdbc.getSSumCases(state_drop,startDate,endDate);
-            String date1 = jdbc.getSHighestDate(state_drop,startDate,endDate);
+            int cases1 = jdbc.getStateSumCases(state_drop,startDate,endDate);
+            String date1 = jdbc.getStateHighestDate(state_drop,startDate,endDate);
             int population = jdbc.statePopulation(state_drop);
             ArrayList<String>dates = jdbc.getStateDate(state_drop, startDate, endDate);
             ArrayList<Integer>allcases = jdbc.getStateCases(state_drop, startDate, endDate);
@@ -149,8 +149,8 @@ public class StateInfections implements Handler {
             html = html + "<th>Date of Highest Case Increase</th>";
             for(int i = 0; i < state.size();i++){
                 String states = state.get(i);
-                int cases = jdbc.getSSumCases(states,startDate,endDate);
-                String date = jdbc.getSHighestDate(states,startDate,endDate);
+                int cases = jdbc.getStateSumCases(states,startDate,endDate);
+                String date = jdbc.getStateHighestDate(states,startDate,endDate);
             html = html + "</tr>";
             html = html + "<tr class = 'item'>";
             html = html + "   <td>" + states + "</td>";

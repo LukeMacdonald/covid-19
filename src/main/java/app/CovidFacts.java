@@ -37,6 +37,7 @@ public class CovidFacts implements Handler {
 
         // Add some CSS (external file)
         html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
+        html = html + "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>";
 
         // Add the body
         html = html + "<body>";
@@ -46,14 +47,14 @@ public class CovidFacts implements Handler {
         html = html + "<a href='/covidfacts.html' style = 'background-color:#3189af'>Facts</a>";
         html = html + "<a href='/infection_global.html'>Infection Rates</a>";
         html = html + "<a href='/countrydeaths.html'>Death Rates</a>";
-        html = html + "<a href='/cumulative_report.html'>Cumulative Reports</a>";
+        html = html + "<a href='/cumalative_global.html''>Cumulative Reports</a>";
         html = html + "<a href='/comparecountries.html'>Country Comparison</a>";
         html = html + "<a href='/worldmap1.html'>World Map</a>";
         html = html + "</div>";
         //header
-        html = html + "<div class = 'title2'>" + "<p style = 'font-size:12px;margin-top:-5px;text-align:left'><a href = '/'>Home</a> > <a href = '/covidfacts.html'>Covid Facts</a></p>"; 
+        html = html + "<div class = 'title'>" + "<p style = 'font-size:12px;margin-top:-5px;text-align:left'><a href = '/'>Home</a> > <a href = '/covidfacts.html'>Covid Facts</a></p>"; 
         html = html + "<h1>Global COVID-19 Facts</h1>";
-        html = html + "<h5>This page provides easy to read covid facts</h5>";
+        html = html + "<h5 style = 'position: relative; left: 2%; width: 600px'>This page provides easy to read covid facts</h5>";
         html = html + "</div>";
 
         //facts on the page

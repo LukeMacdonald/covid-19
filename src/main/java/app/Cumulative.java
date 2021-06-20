@@ -41,7 +41,7 @@ public class Cumulative implements Handler {
         html = html + "<a href='/covidfacts.html'>Facts</a>";
         html = html + "<a href='/infection_global.html'>Infection Rates</a>";
         html = html + "<a href='/countrydeaths.html'>Death Rates</a>";
-        html = html + "<a href='/cumulative_report.html'style = 'background-color:#3189af'>Cumulative Reports</a>";
+        html = html + "<a href='/cumalative_global.html'style = 'background-color:#3189af'>Cumulative Reports</a>";
         html = html + "<a href='/comparecountries.html' >Country Comparison</a>";
         html = html + "<a href='/worldmap1.html'>World Map</a>";
         html = html + "</div>";
@@ -52,6 +52,12 @@ public class Cumulative implements Handler {
         html = html + "<h5 style = 'position: relative; left: 2%; width: 600px'>This page provides culmutive reports for each country about,"
                     + "the total case and death numbers.</h5>";
         html = html + "</div>";
+        html = html + "<div id='navbar2'>";
+        html = html + " <a href='/cumalative_global.html' >Global Cumulative Report</a>";
+        html = html + "<a href = '/cumulative_report.html' style = 'background-color: rgb(241, 241, 241)'>Country Cumulative Report</a>";
+        html = html + "<a href='/worldmap1.html'>Global Map</a>";
+        html = html + "</div>";
+        html = html + "<div id = 'clear'></div>";
         
         //Form
         html = html + "<div class = 'location_selector'>";
@@ -168,7 +174,7 @@ public class Cumulative implements Handler {
         html = html + "<h2 style = 'position: relative;left:2%;'>Comparing Cumalive Report With Other Countries</h2>";
         html = html + "<div class = 'container1'>";
         html = html + "<h4>Culmative Report of Countries with similar climates of " + country + "</h4>";
-        html = html + "<p style = 'font-size: 15px'>This table shows the total number of COVID-19 cases and deaths in the top 5 countries with simlar climates to " + country + ". The Data was collected from 22/01/2020 to 22/04/2021 .</p>";
+        html = html + "<p style = 'font-size: 15px'>This table shows the total number of COVID-19 cases and deaths in the top 5 countries with simlar climates to " + country + ". The Data was collected from 22/01/2020 to 22/04/2021.<b> Click on table headers to sort data by that column<b></p>";
         html = html + "<div class = 'table1'>";
         html = html + "<table class = 'table table-bordered,sortable'>";
         html = html + "<tr>";
@@ -202,7 +208,7 @@ public class Cumulative implements Handler {
             html = html + "<h4>Culmative Report of Countries within " + dis + " km of " + country + "</h4>";
             html = html + "<p style = 'font-size: 15px'>This table shows the total number of COVID-19 cases and deaths in"
                             + " countries within " + dis + " km of " + country + ". The Data was collected from 22/01/2020" 
-                            +" to 22/04/2021. Similar Climates have been determined by comparing countries with the similar latitudes</p>";
+                            +" to 22/04/2021. Similar Climates have been determined by comparing countries with the similar latitudes. <b> Click on table headers to sort data by that column<b></p> ";
             html = html + "<div class = 'table1'>";
             html = html + "<table class = 'table table-bordered,sortable'>";
             html = html + "<tr>";

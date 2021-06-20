@@ -25,7 +25,26 @@ public class StateDeaths implements Handler {
     public void handle(Context context) throws Exception {
 
         // Create a simple HTML webpage in a String
-        var html = "<html>";
+        String html = "<html>";
+
+        html = html + "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>";
+        html = html + "<link href='https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css' rel='stylesheet' />";
+        html = html + "<script src='https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js'></script>";
+        html = html + "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>";
+        
+
+        html = html + "<script>";
+        //Creates a searchable dropdown menu
+        html = html + "$(document).ready(function(){";
+        html = html + "$('#state_drop').select2();";
+        html = html + "});";
+        //Function to set the end dates min value to the start dates input
+        html = html + "function updatedate() {";
+        html = html + " var firstdate = document.getElementById('startDate').value;";
+        html = html + " document.getElementById('endDate').value = '';";
+        html = html + " document.getElementById('endDate').setAttribute('min',firstdate);";
+        html = html + "}";
+        html = html + "</script>";
 
         // Add some Header information
         html = html + "<head>" + 
@@ -44,14 +63,14 @@ public class StateDeaths implements Handler {
         html = html + "<a href='/covidfacts.html'>Facts</a>";
         html = html + "<a href='/infection_global.html'>Infection Rates</a>";
         html = html + "<a href='/countrydeaths.html' style = 'background-color:#3189af'>Death Rates</a>";
-        html = html + "<a href='/cumulative_report.html'>Cumulative Reports</a>";
+        html = html + "<a href='/cumalative_global.html'>Cumulative Reports</a>";
         html = html + "<a href='/comparecountries.html'>Country Comparison</a>";
         html = html + "<a href='/worldmap1.html'>World Map</a>";
         html = html + "</div>";
         //header
-        html = html + "<div class = 'title2'>" + "<p style = 'font-size:12px;margin-top:-5px;text-align:left'><a href = '/'>Home</a> > <a href = '/countrydeaths.html'>Deaths by Country</a> > <a href = '/statedeaths.html'> Deaths by State</a></p>"; 
+        html = html + "<div class = 'title'>" + "<p style = 'font-size:12px;margin-top:-5px'><a href = '/'>Home</a> > <a href = '/infection_global.html'>Death Rates</a></p>"; 
         html = html + "<h1>Global Deaths by State</h1>";
-        html = html + "<h5>Select a state below to view deaths and related information</h5>";
+        html = html + "<h5 style = 'position: relative; left: 2%; width: 600px'>Select a state below to view deaths and related information</h5>";
         html = html + "</div>";
 
 
@@ -62,47 +81,35 @@ public class StateDeaths implements Handler {
         //form, including country selection
         // TODO: make ^ searchable
     
-        html = html + "<div id='deaths-page-flex-container'>";
-        html = html + "<div class='search-sidebar'>";
-        html = html + "<div class='location-selector-2'>";
-
-        //navbar to switch between states and countries
         html = html + "<div id='navbar2'>";
-        html = html + " <a href='/countrydeaths.html' >Deaths by Country</a>";
-        html = html + " <a href='/statedeaths.html'style = 'background-color: rgb(241, 241, 241)'>Deaths by State</a>";
+        html = html + "<a href = '/countrydeaths.html'>Country Deaths</a>";
+        html = html + "<a href='/statedeaths.html'style = 'background-color: rgb(241, 241, 241)'>State Deaths</a>";
         html = html + "</div>";
-        html = html + "<div id = 'clear'></div>";
-
-            html = html + "<form action='/statedeaths.html' method='post'>";
-                
-            //TODO: add way to switch between selecting states/regions and countries
-                html = html + "<label for='country_drop' id = 'label1'>Select State: </label><br>";
-                html = html + "<select id='country_drop' name='country_drop' value = 'Victoria'>";
-                html = html + "    <option selected disabled>Select a State...</option>";
-                for(int i = 0; i < states.size();i++){
-                    html = html + "<option >" + states.get(i) + "</option>";
-                }
-                html = html + "</select><br>";
-                
-                //date range selection
-                html = html + " <label for = 'startDate'>Select Start Date:</label><br>";
-                html = html + " <input type='date' id ='startDate' name='startDate' min = '2020-01-22' max = '2021-04-22'onchange= 'updatedate()' value = '2020-01-22'><br>";
-                html = html + "  <label for = 'endDate'>Select End Date:</label><br>";
-                html = html + "  <input id='endDate' name='endDate' type = 'date' min = '2020-01-22' max = '2021-04-22' value = '2021-04-22'><br>";
-
-                //buttons to sumbit and reset the form
-                html = html + "<button type='submit' id = 'submit'>Show Data</button><br>";
-                html = html + "<input type='reset' id = 'reset'>";
-            html = html + "</form>";
-
-            //ends location selector div
-            html = html + "</div>";
-            //ends search-sidebar flex container
-            html = html + "</div>";
-            //deaths-page-flex-container ends later as it still must contain the results
+        html = html + "<div id = 'clear'></div>"; 
+        
+        //Form
+        html = html + "<form class = action='/statedeaths.html' method='post'>";
+        html = html + " <div id = 'location_selector'>";
+        html = html + "<label for='state_drop' id = 'label1'>Select State:</label><br>";
+        html = html + "<select id='state_drop' name='state_drop'>";
+        html = html + "   <option selected disabled>Select a State...</option>";
+        for(int i = 0; i < states.size();i++){
+            html = html + "   <option >" + states.get(i) + "</option>";
+        }
+        html = html + " </select>";
+        html = html + "</div>";
+        html = html + " <div id = 'date_selector'>";
+        html = html + " <label for = 'startDate'>Select Start Date:</label>";
+        html = html + " <input class='form-control' type='date' id ='startDate' name='startDate' min = '2020-01-22' max = '2021-04-22'onchange= 'updatedate()' value = '2020-01-22'> ";
+        html = html + "  <label for = 'endDate'>Select End Date:</label>";
+        html = html + "  <input class='form-control' id='endDate' name='endDate' type = 'date' min = '2020-01-22' max = '2021-04-22' value = '2021-04-22'>";
+        html = html + "</div>";
+        html = html + "<button type='submit' class='btn btn-primary' id = 'submit'>Show Data</button>";
+        html = html + "<input type='reset' class='btn btn-light' id = 'reset'>";
+        html = html + "</form>";
 
         //gets form input through post
-        String country_drop = context.formParam("country_drop"); 
+        String country_drop = context.formParam("state_drop"); 
         String startDate = context.formParam("startDate");
         String endDate = context.formParam("endDate");   
         
@@ -114,9 +121,7 @@ public class StateDeaths implements Handler {
         //creates output on page with data
         else {
 
-            // ArrayList<Integer> countryTotalDeaths = jdbc.countryTotalDeaths(country_drop);
             ArrayList<String> highestDeathDayState = jdbc.highestDeathDayState(country_drop, startDate, endDate);
-            // ArrayList<Float> countryDeathRate = jdbc.countryDeathRate(country_drop);
 
                 html = html + "<div id='results-flex-container'>";
 
@@ -128,10 +133,10 @@ public class StateDeaths implements Handler {
                 html = html + "</div>";
 
                 html = html + "<div id='div1'>";
-                    ArrayList<Float> stateDeathsDateRange = jdbc.getDeathsDateRangeState(startDate, endDate, country_drop);
-                        float noDeathsDateRange = stateDeathsDateRange.get(0);
-                        float noCasesDateRange = stateDeathsDateRange.get(1);
-                        float deathRateDateRange = noDeathsDateRange / noCasesDateRange * 100;
+                    ArrayList<Integer> stateDeathsDateRange = jdbc.getDeathsDateRangeState(startDate, endDate, country_drop);
+                        int noDeathsDateRange = stateDeathsDateRange.get(0);
+                        int noCasesDateRange = stateDeathsDateRange.get(1);
+                        double deathRateDateRange = noDeathsDateRange * 1.0 / noCasesDateRange * 100;
                         
                     html = html + "<p>Total deaths in date range: </p>";
                     html = html + noDeathsDateRange;
@@ -157,10 +162,11 @@ public class StateDeaths implements Handler {
                 html = html + "</div>";
                         
                 html = html + "<div id='div4'>";
-                    
-                    html = html + "<p>Mortality rate in date range: </p>";
-                    
-                        html = html + deathRateDateRange + "%";
+                
+                        double deathRate2d = Math.round(deathRateDateRange*100.0)/100.0;
+                        html = html + "<p>Mortality rate in date range: </p>";
+                        html = html + deathRate2d;
+                        html = html + "%<br>";
                     
                     html = html + "</div>";
             

@@ -30,7 +30,7 @@ public class map implements Handler{
         html = html + "<a href='/covidfacts.html'>Facts</a>";
         html = html + "<a href='/infection_global.html'>Infection Rates</a>";
         html = html + "<a href='/countrydeaths.html'>Death Rates</a>";
-        html = html + "<a href='/cumulative_report.html'>Cumulative Reports</a>";
+        html = html + "<a href='/cumalative_global.html'>Cumulative Reports</a>";
         html = html + "<a href='/comparecountries.html'>Country Comparison</a>";
         html = html + "<a href='/worldmap1.html'style = 'background-color:#3189af'>World Map</a>";
         html = html + "</div>";
