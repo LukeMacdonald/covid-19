@@ -81,10 +81,11 @@ public class CovidFacts implements Handler {
                 html = html + "</p>";
         html = html + "<p style='text-align:center'>Total COVID-19 global mortality rate: ";
                 //calculate the fraction of deaths/cases to find the 'deaths per case' value
-                float totalMortality = (float)totalDeaths / totalCases;
+                float totalMortality = (float)totalDeaths / totalCases * 100;
                 //multiply by 100 to make a percentage. final value represents percent mortality rate
                 //TODO: this value should maybe be changed to per 100 or 1000 people
-                html = html + (totalMortality * 100) + "%";
+                double deathRate2d = Math.round(totalMortality*100.0)/100.0;
+                html = html + (deathRate2d) + "%";
                 html = html + "</p>";
 
     
@@ -103,7 +104,8 @@ public class CovidFacts implements Handler {
                 String cName = deathRateList.get(i);
                 String stringDeathRate = deathRateList.get(i+1);
                 Float FloatDeathRate = Float.parseFloat(stringDeathRate);
-                html = html + "<p>" + cName + ": " + FloatDeathRate + "%</p>";
+                deathRate2d = Math.round(FloatDeathRate*100.0)/100.0;
+                html = html + "<p>" + cName + ": " + deathRate2d + "%</p>";
             }
             
         html = html + "</div>";    
