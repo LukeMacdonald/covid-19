@@ -9,6 +9,7 @@ public class map implements Handler{
     String html = "<html>";
     html = html + "<head>";
     html = html +"<title>Cases</title>";
+    html = html + "<link rel=\"shortcut icon\" type=\"image/png\" href=\"covidlogo.png\"/>";
     html = html + "<link rel='stylesheet' type='text/css' href='common.css'/>";
     html = html + "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>";
     html = html + "<script>";

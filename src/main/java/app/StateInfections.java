@@ -15,6 +15,7 @@ public class StateInfections implements Handler {
 
         html = html + "<head>";
         html = html +"<title>Cases</title>";
+        html = html + "<link rel=\"shortcut icon\" type=\"image/png\" href=\"covidlogo.png\"/>";
         html = html + "<link rel='stylesheet' type='text/css' href='common.css'/>";
         html = html + "<meta name='viewport' content='width=device-width, initial-scale=1'>";
         html = html + "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>";
