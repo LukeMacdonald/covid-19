@@ -18,18 +18,16 @@ public class Cumulative implements Handler {
         html = html + "<meta name='viewport' content='width=device-width, initial-scale=1'>";
         html = html + "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>";
         html = html + "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>";
-        html = html + "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css' integrity='sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg='' crossorigin='anonymous' />";
-        html = html + "<script src='https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js' integrity='sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=' crossorigin='anonymous'></script>";
         html = html + "<script src='https://www.kryogenix.org/code/browser/sorttable/sorttable.js'></script>";
+        html = html + "<link href='https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css' rel='stylesheet' />";
+        html = html + "<script src='https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js'></script>";
 
         html = html + "<script>"; 
         
         //Search Bar
         html = html + "$(document).ready(function(){";
-        html = html + "$('select').selectize({";
-        html = html + "sortField: 'text'";
-        html = html + "});";
-        html = html + "});";
+        html = html + "$('#country_drop').select2();";
+        html = html + "});";   
         html = html + "</script>";
 
         html = html + "</head>";
