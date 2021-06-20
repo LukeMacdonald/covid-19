@@ -26,6 +26,23 @@ public class CompareCountries implements Handler {
         // Create a simple HTML webpage in a String
         String html = "<html>";
 
+        html = html + "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>";
+        html = html + "<link href='https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css' rel='stylesheet' />";
+        html = html + "<script src='https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js'></script>";
+
+        html = html + "<script>";
+        //Creates a searchable dropdown menu
+        html = html + "$(document).ready(function(){";
+        html = html + "$('#country_drop').select2();";
+        html = html + "});";
+        //Function to set the end dates min value to the start dates input
+        html = html + "function updatedate() {";
+        html = html + " var firstdate = document.getElementById('startDate').value;";
+        html = html + " document.getElementById('endDate').value = '';";
+        html = html + " document.getElementById('endDate').setAttribute('min',firstdate);";
+        html = html + "}";
+        html = html + "</script>";
+
         // Add some Header information
         html = html + "<head>" + 
                "<title>Compare Countries</title>" +
@@ -49,12 +66,12 @@ public class CompareCountries implements Handler {
         html = html + "</div>";
         //header
         html = html + "<div class = 'title2'>" + "<p style = 'font-size:12px;margin-top:-5px;text-align:left'><a href = '/'>Home</a> > <a href = '/comparecountries.html'>Compare Countries</a></p>"; 
-        html = html + "<h1>Compare Countries: Simple";
+        html = html + "<h1>Find Similar Countries";
         html = html + "<div style='display: flex; justify-content:left;'>";
-        html = html + "<button onclick=\"document.location='/comparecountriesadvanced.html'\" style='margin-top:10px;' type='button';'>Advanced Search</button>";
+        html = html + "<button onclick=\"document.location='/comparecountriesadvanced.html'\" style='margin-top:10px;' type='button';'>Compare 2 Countries</button>";
         html = html + "</div>";
         html = html + "</h1>";
-        html = html + "<h5>Using this simple compare form, find countries similar to that selected. If you want to compare 2 countries, go to the advanced search</h5>";
+        html = html + "<h5>Using this simple compare form, find countries similar to that selected. If you want to compare 2 countries, click the \"Compare 2 Countries\" button</h5>";
         html = html + "</div>";
 
 
@@ -93,7 +110,7 @@ public class CompareCountries implements Handler {
             html = html + "  <input id='endDate' name='endDate' type = 'date' min = '2020-01-22' max = '2021-04-22' value = '2021-04-22'><br>";
 
             //buttons to sumbit and reset the form
-            html = html + "<button type='submit' id = 'submit'>Show Data</button><br>";
+            html = html + "<button type='submit' id = 'submit'>Show Data</button>";
             html = html + "<input type='reset' id = 'reset'>";
         html = html + "</form>";
 
@@ -118,6 +135,7 @@ public class CompareCountries implements Handler {
             ArrayList<String> similarDeathRate = jdbc.getSimilarDeathRate(country_drop, startDate, endDate);
             ArrayList<String> similarHighestDeaths = jdbc.similarHighestDeaths(country_drop, startDate, endDate);
             ArrayList<String> similarTotalDeathsCountry = jdbc.similarTotalDeathsCountry(country_drop, startDate, endDate);
+            ArrayList<String> similarTotalCasesCountry = jdbc.similarTotalCasesCountry(country_drop, startDate, endDate);
 
                 html = html + "<div id='results-flex-container'>";
 
@@ -175,6 +193,18 @@ public class CompareCountries implements Handler {
                         
                     
                     html = html + "</div>";
+
+                    html = html + "<div id='div4'>";
+                //similar total cases
+                html = html + "<p style='font-weight:bolder'>3 Most similar total cases: </p>";
+                
+                for (int i=0; i < similarTotalCasesCountry.size(); i=i+2) {
+                    html = html + "<p style='font-weight:bold; margin:5px;'>" + similarTotalCasesCountry.get(i) + ":</p>";
+                    html = html + similarTotalCasesCountry.get(i+1) + " cases";
+                }  
+                    
+                
+                html = html + "</div>";
                         
                     
                     html = html + "</div>";

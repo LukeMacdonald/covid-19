@@ -682,7 +682,7 @@ public class JDBCConnection {
             connection = DriverManager.getConnection(DATABASE);
             Statement statement = connection.createStatement();
             statement.setQueryTimeout(30);
-            String query = "SELECT * FROM State JOIN Country ON state.CountryID = country.CountryID;"; 
+            String query = "SELECT * FROM State s JOIN Country c ON s.CountryID = c.CountryID WHERE (s.countryID = '182') OR (s.countryID = '9');"; 
             ResultSet results = statement.executeQuery(query);
             while (results.next()) {
                 String stateName = results.getString("sname");
@@ -1221,8 +1221,8 @@ public class JDBCConnection {
     }  
 
     //this retrieves the total deaths of a specified country within a date range
-    public ArrayList<Float> getDeathsDateRange(String startDate, String endDate, String country) {
-        ArrayList<Float> covid = new ArrayList<Float>();
+    public ArrayList<Integer> getDeathsDateRange(String startDate, String endDate, String country) {
+        ArrayList<Integer> covid = new ArrayList<Integer>();
 
         // Setup the variable for the JDBC connection
         Connection connection = null;
@@ -1248,8 +1248,8 @@ public class JDBCConnection {
                 // We can lookup a column of the a single record in the
                 // result using the column name
                 // BUT, we must be careful of the column type!
-                float noDeaths = results.getFloat("SUM(NoDeaths)");
-                float noCases = results.getFloat("SUM(NoCases)");
+                int noDeaths = results.getInt("SUM(NoDeaths)");
+                int noCases = results.getInt("SUM(NoCases)");
 
                 covid.add(noDeaths);
                 covid.add(noCases);
@@ -1276,8 +1276,8 @@ public class JDBCConnection {
     }  
 
         //this retrieves the total deaths of a specified state within a date range
-        public ArrayList<Float> getDeathsDateRangeState(String startDate, String endDate, String state) {
-        ArrayList<Float> covid = new ArrayList<Float>();
+        public ArrayList<Integer> getDeathsDateRangeState(String startDate, String endDate, String state) {
+        ArrayList<Integer> covid = new ArrayList<Integer>();
 
         // Setup the variable for the JDBC connection
         Connection connection = null;
@@ -1303,8 +1303,8 @@ public class JDBCConnection {
                 // We can lookup a column of the a single record in the
                 // result using the column name
                 // BUT, we must be careful of the column type!
-                float noDeaths = results.getFloat("SUM(sc.NoDeaths)");
-                float noCases = results.getFloat("SUM(sc.NoCases)");
+                int noDeaths = results.getInt("SUM(sc.NoDeaths)");
+                int noCases = results.getInt("SUM(sc.NoCases)");
 
                 covid.add(noDeaths);
                 covid.add(noCases);
@@ -1970,7 +1970,7 @@ public class JDBCConnection {
             return covid;
         }
     
-
+    //working
     public ArrayList<String> similarTotalDeathsAusState(String state, String startDate, String endDate) {
         ArrayList<String> covid = new ArrayList<String>();
     
@@ -2040,7 +2040,7 @@ public class JDBCConnection {
             return covid;
         }
     
-        
+        //working
         public ArrayList<String> similarTotalDeathsUSState(String state, String startDate, String endDate) {
             ArrayList<String> covid = new ArrayList<String>();
         
@@ -2110,7 +2110,7 @@ public class JDBCConnection {
                 return covid;
             }
         
-            
+        //working   
         public ArrayList<String> similarTotalDeathsCountryState(String state, String startDate, String endDate) {
             ArrayList<String> covid = new ArrayList<String>();
         
@@ -2180,7 +2180,7 @@ public class JDBCConnection {
                 return covid;
             }
               
-        
+        //working
         public ArrayList<String> similarTotalDeathsCountry(String country, String startDate, String endDate) {
             ArrayList<String> covid = new ArrayList<String>();
         
@@ -2227,6 +2227,286 @@ public class JDBCConnection {
         
                         System.out.println(Cname);
                         System.out.println(totalNoDeaths);
+                    }
+                    
+                    // Close the statement because we are done with it
+                    statement.close();
+                } catch (SQLException e) {
+                    // If there is an error, lets just pring the error
+                    System.err.println(e.getMessage());
+                } finally {
+                    // Safety code to cleanup
+                    try {
+                        if (connection != null) {
+                            connection.close();
+                        }
+                    } catch (SQLException e) {
+                        // connection close failed.
+                        System.err.println(e.getMessage());
+                    }
+                }
+        
+                //return the integer list containing all values of 'nodeaths' 
+                return covid;
+            }
+            
+    //working
+    public ArrayList<String> similarTotalCasesAusState(String state, String startDate, String endDate) {
+        ArrayList<String> covid = new ArrayList<String>();
+    
+            // Setup the variable for the JDBC connection
+            Connection connection = null;
+    
+            try {
+                // Connect to JDBC data base
+                connection = DriverManager.getConnection(DATABASE);
+    
+                // Prepare a new SQL Query & Set a timeout
+                Statement statement = connection.createStatement();
+                statement.setQueryTimeout(30);
+    
+                //sort by determining index of selected country, then use the indexes around that value
+                String query = "SELECT s.Sname, SUM(sc.NoCases) AS \"TotalNoCases\" FROM StateCount sc JOIN State s ON s.stateID = sc.stateID WHERE s.Sname='" + state + "'AND Date BETWEEN '"+ startDate + "' AND '"+ endDate + "';";
+                    ResultSet results = statement.executeQuery(query);
+                    Float selectedCountryTotalCases = (results.getFloat("TotalNoCases"));
+                    System.out.print("Selected State Total Cases: ");
+                    System.out.println(selectedCountryTotalCases);
+    
+            
+    
+                //The Query
+                String query2 = "SELECT s.Sname, SUM(sc.NoCases) AS \"TotalNoCases\"" +
+                            "FROM StateCount sc JOIN State s ON sc.stateID = s.stateID WHERE s.countryID = '9' AND Date BETWEEN '"+ startDate +"' AND '"+ endDate +"' GROUP BY sc.stateID ORDER BY ABS(" + selectedCountryTotalCases + " * 1.0 - TotalNoCases) ASC LIMIT 4;";
+                
+                // Get Result
+                ResultSet results2 = statement.executeQuery(query2);
+    
+                // Process all of the results
+                // The "results" variable is similar to an array
+                // We can iterate through all of the database query results
+                while (results2.next()) {
+                    // We can lookup a column of the a single record in the
+                    // result using the column name
+                    // BUT, we must be careful of the column type!
+    
+                    String Sname = results2.getString("Sname");
+                    String totalNoCases = results2.getString("TotalNoCases");
+                    
+                    covid.add(Sname);
+                    covid.add(totalNoCases);
+    
+                    System.out.println(Sname);
+                    System.out.println(totalNoCases);
+                }
+                
+                // Close the statement because we are done with it
+                statement.close();
+            } catch (SQLException e) {
+                // If there is an error, lets just pring the error
+                System.err.println(e.getMessage());
+            } finally {
+                // Safety code to cleanup
+                try {
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (SQLException e) {
+                    // connection close failed.
+                    System.err.println(e.getMessage());
+                }
+            }
+    
+            //return the integer list containing all values of 'nodeaths' 
+            return covid;
+        }
+    
+        //working
+        public ArrayList<String> similarTotalCasesUSState(String state, String startDate, String endDate) {
+            ArrayList<String> covid = new ArrayList<String>();
+        
+                // Setup the variable for the JDBC connection
+                Connection connection = null;
+        
+                try {
+                    // Connect to JDBC data base
+                    connection = DriverManager.getConnection(DATABASE);
+        
+                    // Prepare a new SQL Query & Set a timeout
+                    Statement statement = connection.createStatement();
+                    statement.setQueryTimeout(30);
+        
+                    //sort by determining index of selected country, then use the indexes around that value
+                    String query = "SELECT s.Sname, SUM(sc.NoCases) AS \"TotalNoCases\" FROM StateCount sc JOIN State s ON s.stateID = sc.stateID WHERE s.Sname='" + state + "'AND Date BETWEEN '"+ startDate + "' AND '"+ endDate + "';";
+                        ResultSet results = statement.executeQuery(query);
+                        Float selectedCountryTotalCases = (results.getFloat("TotalNoCases"));
+                        System.out.print("Selected State Total Cases: ");
+                        System.out.println(selectedCountryTotalCases);
+        
+                
+        
+                    //The Query
+                    String query2 = "SELECT s.Sname, SUM(sc.NoCases) AS \"TotalNoCases\"" +
+                                "FROM StateCount sc JOIN State s ON sc.stateID = s.stateID WHERE s.countryID = '182' AND Date BETWEEN '"+ startDate +"' AND '"+ endDate +"' GROUP BY sc.stateID ORDER BY ABS(" + selectedCountryTotalCases + " * 1.0 - TotalNoCases) ASC LIMIT 4;";
+                    
+                    // Get Result
+                    ResultSet results2 = statement.executeQuery(query2);
+        
+                    // Process all of the results
+                    // The "results" variable is similar to an array
+                    // We can iterate through all of the database query results
+                    while (results2.next()) {
+                        // We can lookup a column of the a single record in the
+                        // result using the column name
+                        // BUT, we must be careful of the column type!
+        
+                        String Sname = results2.getString("Sname");
+                        String totalNoCases = results2.getString("TotalNoCases");
+                        
+                        covid.add(Sname);
+                        covid.add(totalNoCases);
+        
+                        System.out.println(Sname);
+                        System.out.println(totalNoCases);
+                    }
+                    
+                    // Close the statement because we are done with it
+                    statement.close();
+                } catch (SQLException e) {
+                    // If there is an error, lets just pring the error
+                    System.err.println(e.getMessage());
+                } finally {
+                    // Safety code to cleanup
+                    try {
+                        if (connection != null) {
+                            connection.close();
+                        }
+                    } catch (SQLException e) {
+                        // connection close failed.
+                        System.err.println(e.getMessage());
+                    }
+                }
+        
+                //return the integer list containing all values of 'nodeaths' 
+                return covid;
+            }
+        
+        //working
+        public ArrayList<String> similarTotalCasesCountryState(String state, String startDate, String endDate) {
+            ArrayList<String> covid = new ArrayList<String>();
+        
+                // Setup the variable for the JDBC connection
+                Connection connection = null;
+        
+                try {
+                    // Connect to JDBC data base
+                    connection = DriverManager.getConnection(DATABASE);
+        
+                    // Prepare a new SQL Query & Set a timeout
+                    Statement statement = connection.createStatement();
+                    statement.setQueryTimeout(30);
+        
+                    //sort by determining index of selected country, then use the indexes around that value
+                    String query = "SELECT s.Sname, SUM(sc.NoCases) AS \"TotalNoCases\" FROM StateCount sc JOIN State s ON s.stateID = sc.stateID WHERE s.Sname='" + state + "'AND Date BETWEEN '"+ startDate + "' AND '"+ endDate + "';";
+                        ResultSet results = statement.executeQuery(query);
+                        Float selectedCountryTotalCases = (results.getFloat("TotalNoCases"));
+                        System.out.print("Selected State Total Cases: ");
+                        System.out.println(selectedCountryTotalCases);
+        
+                
+        
+                    //The Query
+                    String query2 = "SELECT c.Cname, SUM(cc.NoCases) AS \"TotalNoCases\"" +
+                                "FROM CountryCases cc JOIN Country c ON cc.countryID = c.countryID WHERE Date BETWEEN '"+ startDate +"' AND '"+ endDate +"' GROUP BY cc.countryID ORDER BY ABS(" + selectedCountryTotalCases + " * 1.0 - TotalNoCases) ASC LIMIT 4;";
+                    
+                    // Get Result
+                    ResultSet results2 = statement.executeQuery(query2);
+        
+                    // Process all of the results
+                    // The "results" variable is similar to an array
+                    // We can iterate through all of the database query results
+                    while (results2.next()) {
+                        // We can lookup a column of the a single record in the
+                        // result using the column name
+                        // BUT, we must be careful of the column type!
+        
+                        String Cname = results2.getString("Cname");
+                        String totalNoCases = results2.getString("TotalNoCases");
+                        
+                        covid.add(Cname);
+                        covid.add(totalNoCases);
+        
+                        System.out.println(Cname);
+                        System.out.println(totalNoCases);
+                    }
+                    
+                    // Close the statement because we are done with it
+                    statement.close();
+                } catch (SQLException e) {
+                    // If there is an error, lets just pring the error
+                    System.err.println(e.getMessage());
+                } finally {
+                    // Safety code to cleanup
+                    try {
+                        if (connection != null) {
+                            connection.close();
+                        }
+                    } catch (SQLException e) {
+                        // connection close failed.
+                        System.err.println(e.getMessage());
+                    }
+                }
+        
+                //return the integer list containing all values of 'nodeaths' 
+                return covid;
+            }
+                
+        //working
+        public ArrayList<String> similarTotalCasesCountry(String country, String startDate, String endDate) {
+            ArrayList<String> covid = new ArrayList<String>();
+        
+                // Setup the variable for the JDBC connection
+                Connection connection = null;
+        
+                try {
+                    // Connect to JDBC data base
+                    connection = DriverManager.getConnection(DATABASE);
+        
+                    // Prepare a new SQL Query & Set a timeout
+                    Statement statement = connection.createStatement();
+                    statement.setQueryTimeout(30);
+        
+                    //sort by determining index of selected country, then use the indexes around that value
+                    String query = "SELECT c.Cname, SUM(cc.NoCases) AS \"TotalNoCases\" FROM CountryCases cc JOIN Country c ON c.countryID = cc.countryID WHERE c.Cname='" + country + "'AND Date BETWEEN '"+ startDate + "' AND '"+ endDate + "';";
+                        ResultSet results = statement.executeQuery(query);
+                        Float selectedCountryTotalCases = (results.getFloat("TotalNoCases"));
+                        System.out.print("Selected Country Total Cases: ");
+                        System.out.println(selectedCountryTotalCases);
+        
+                
+        
+                    //The Query
+                    String query2 = "SELECT c.Cname, SUM(cc.NoCases) AS \"TotalNoCases\"" +
+                                "FROM CountryCases cc JOIN Country c ON cc.countryID = c.countryID WHERE Date BETWEEN '"+ startDate +"' AND '"+ endDate +"' GROUP BY cc.countryID ORDER BY ABS(" + selectedCountryTotalCases + " * 1.0 - TotalNoCases) ASC LIMIT 4;";
+                    
+                    // Get Result
+                    ResultSet results2 = statement.executeQuery(query2);
+        
+                    // Process all of the results
+                    // The "results" variable is similar to an array
+                    // We can iterate through all of the database query results
+                    while (results2.next()) {
+                        // We can lookup a column of the a single record in the
+                        // result using the column name
+                        // BUT, we must be careful of the column type!
+        
+                        String Cname = results2.getString("Cname");
+                        String totalNoCases = results2.getString("TotalNoCases");
+                        
+                        covid.add(Cname);
+                        covid.add(totalNoCases);
+        
+                        System.out.println(Cname);
+                        System.out.println(totalNoCases);
                     }
                     
                     // Close the statement because we are done with it

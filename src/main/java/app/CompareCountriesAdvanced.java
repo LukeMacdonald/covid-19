@@ -26,6 +26,27 @@ public class CompareCountriesAdvanced implements Handler {
         // Create a simple HTML webpage in a String
         String html = "<html>";
 
+        html = html + "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>";
+        html = html + "<link href='https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css' rel='stylesheet' />";
+        html = html + "<script src='https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js'></script>";
+
+        html = html + "<script>";
+        //Creates a searchable dropdown menu
+        html = html + "$(document).ready(function(){";
+        html = html + "$('#country_drop_1').select2();";
+        html = html + "});";
+        //Creates a searchable dropdown menu
+        html = html + "$(document).ready(function(){";
+        html = html + "$('#country_drop_2').select2();";
+        html = html + "});";
+        //Function to set the end dates min value to the start dates input
+        html = html + "function updatedate() {";
+        html = html + " var firstdate = document.getElementById('startDate').value;";
+        html = html + " document.getElementById('endDate').value = '';";
+        html = html + " document.getElementById('endDate').setAttribute('min',firstdate);";
+        html = html + "}";
+        html = html + "</script>";
+
         // Add some Header information
         html = html + "<head>" + 
                "<title>Compare Countries</title>" +
@@ -49,10 +70,10 @@ public class CompareCountriesAdvanced implements Handler {
         html = html + "</div>";
         //header
         html = html + "<div class = 'title2'>" + "<p style = 'font-size:12px;margin-top:-5px;text-align:left'><a href = '/'>Home</a> > <a href = '/comparecountries.html'>Compare Countries</a> > <a href='/comparecountriesadvanced.html'>Compare Countries: Advanced</a></p>";  
-        html = html + "<h1>Compare Countries: Advanced";
+        html = html + "<h1>Compare 2 Countries";
         //button to return to simple compare page
         html = html + "<div style='display: flex; justify-content:left;'>";
-        html = html + "<button onclick=\"document.location='/comparecountries.html'\" style='margin-top:10px;' type='button';'>Simple Search</button>";
+        html = html + "<button onclick=\"document.location='/comparecountries.html'\" style='margin-top:10px;' type='button';'>Find Similar Countries</button>";
         html = html + "</div>";
         
         html = html + "</h1>";
@@ -107,7 +128,7 @@ public class CompareCountriesAdvanced implements Handler {
         html = html + "  <input id='endDate_1' name='endDate' type = 'date' min = '2020-01-22' max = '2021-04-22' value = '2021-04-22'><br>";
         
         //buttons to sumbit and reset the form
-            html = html + "<button type='submit' id = 'submit'>Show Data</button><br>";
+            html = html + "<button type='submit' id = 'submit'>Show Data</button>";
             html = html + "<input type='reset' id = 'reset'>";
         html = html + "</form>";
 
@@ -132,15 +153,15 @@ public class CompareCountriesAdvanced implements Handler {
         else {
 
         
-            ArrayList<Float> countryDeathsDateRange_1 = jdbc.getDeathsDateRange(startDate, endDate, country_drop_1);
-                            float noDeathsDateRange_1 = countryDeathsDateRange_1.get(0);
-                            float noCasesDateRange_1 = countryDeathsDateRange_1.get(1);
-                            double deathRateDateRange_1 = noDeathsDateRange_1 / noCasesDateRange_1 * 100;
+            ArrayList<Integer> countryDeathsDateRange_1 = jdbc.getDeathsDateRange(startDate, endDate, country_drop_1);
+                            int noDeathsDateRange_1 = countryDeathsDateRange_1.get(0);
+                            int noCasesDateRange_1 = countryDeathsDateRange_1.get(1);
+                            double deathRateDateRange_1 = noDeathsDateRange_1 * 1.0 / noCasesDateRange_1 * 100;
 
-            ArrayList<Float> countryDeathsDateRange_2 = jdbc.getDeathsDateRange(startDate, endDate, country_drop_2);
-                            float noDeathsDateRange_2 = countryDeathsDateRange_2.get(0);
-                            float noCasesDateRange_2 = countryDeathsDateRange_2.get(1);
-                            double deathRateDateRange_2 = noDeathsDateRange_2 / noCasesDateRange_2 * 100;
+            ArrayList<Integer> countryDeathsDateRange_2 = jdbc.getDeathsDateRange(startDate, endDate, country_drop_2);
+                            int noDeathsDateRange_2 = countryDeathsDateRange_2.get(0);
+                            int noCasesDateRange_2 = countryDeathsDateRange_2.get(1);
+                            double deathRateDateRange_2 = noDeathsDateRange_2 * 1.0 / noCasesDateRange_2 * 100;
 
             String highestDeathDay1 = jdbc.highestDeathDay(country_drop_1, startDate, endDate).get(1);
             String highestDeaths1 = jdbc.highestDeathDay(country_drop_1, startDate, endDate).get(0);
@@ -172,6 +193,24 @@ public class CompareCountriesAdvanced implements Handler {
                         html = html + "<p>" + noDeathsDateRange_2 + "</p>";
 
                 html = html + "</div>";
+
+
+                html = html + "<div class='break' style='border:none; background-color: transparent;'></div>";
+    
+                    html = html + "<div id='cases1'>";
+                    //total cases recorded in time period
+                            html = html + "<p>" + country_drop_1 + " total cases: </p>";
+                            html = html + "<p>" + noCasesDateRange_1 + "</p>";
+                
+                    html = html + "</div>";
+    
+                    html = html + "<div id='cases2'>";
+                    //total cases recorded in time period
+                            html = html + "<p>" + country_drop_2 + " total cases: </p>";
+                            html = html + "<p>" + noCasesDateRange_2 + "</p>";
+                
+                    html = html + "</div>";
+
             
             html = html + "<div class='break' style='border:none; background-color: transparent;'></div>";
 
@@ -210,29 +249,8 @@ public class CompareCountriesAdvanced implements Handler {
                 html = html + "<p>" + country_drop_2 + "'s date of highest deaths': </p>";
                 html = html + "<p>" + highestDeathDay2 + "</p>";
 
-                html = html + "</div>";
-
-            html = html + "<div class='break' style='border:none; background-color: transparent;'></div>";
-
-                html = html + "<div id='deathPerPopulation1'>";
-                //total deaths recorded by selected country 1 compared to population sample
-                //TODO: this doesn't calc correctly. Either fix it or replace it as a result with something else
-                int population_1 = jdbc.population(country_drop_1);
-                double deathPerMillion1 = Math.round((noDeathsDateRange_1 * 1.0 / (population_1/100000))*100.0)/100.0;
-                    html = html + "<p>" + country_drop_1 + " deaths per hundred thousand: </p>";
-                        html = html + "<p>" + deathPerMillion1 + "</p>";
             
-                html = html + "</div>";
-
-                html = html + "<div id='deathPerPopulation2'>";
-                    //total deaths recorded by selected country 2 compared to population sample
-                    int population_2 = jdbc.population(country_drop_2);
-                    double deathPerMillion2 = Math.round((noDeathsDateRange_2 * 1.0 / (population_2/100000))*100.0)/100.0;
-                    html = html + "<p>" + country_drop_2 + " deaths per hundred thousand: </p>";
-                        html = html + "<p>" + deathPerMillion2 + "</p>";
-
-                html = html + "</div>";
-        }       //TODO: Add rest of required results on spec sheet, then make state version of page
+        }
 
         //ends compare-flex-container div
         html = html + "</div>";

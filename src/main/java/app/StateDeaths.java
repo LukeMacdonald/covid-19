@@ -25,7 +25,24 @@ public class StateDeaths implements Handler {
     public void handle(Context context) throws Exception {
 
         // Create a simple HTML webpage in a String
-        var html = "<html>";
+        String html = "<html>";
+
+        html = html + "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>";
+        html = html + "<link href='https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css' rel='stylesheet' />";
+        html = html + "<script src='https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js'></script>";
+
+        html = html + "<script>";
+        //Creates a searchable dropdown menu
+        html = html + "$(document).ready(function(){";
+        html = html + "$('#country_drop').select2();";
+        html = html + "});";
+        //Function to set the end dates min value to the start dates input
+        html = html + "function updatedate() {";
+        html = html + " var firstdate = document.getElementById('startDate').value;";
+        html = html + " document.getElementById('endDate').value = '';";
+        html = html + " document.getElementById('endDate').setAttribute('min',firstdate);";
+        html = html + "}";
+        html = html + "</script>";
 
         // Add some Header information
         html = html + "<head>" + 
@@ -91,7 +108,7 @@ public class StateDeaths implements Handler {
                 html = html + "  <input id='endDate' name='endDate' type = 'date' min = '2020-01-22' max = '2021-04-22' value = '2021-04-22'><br>";
 
                 //buttons to sumbit and reset the form
-                html = html + "<button type='submit' id = 'submit'>Show Data</button><br>";
+                html = html + "<button type='submit' id = 'submit'>Show Data</button>";
                 html = html + "<input type='reset' id = 'reset'>";
             html = html + "</form>";
 
@@ -114,9 +131,7 @@ public class StateDeaths implements Handler {
         //creates output on page with data
         else {
 
-            // ArrayList<Integer> countryTotalDeaths = jdbc.countryTotalDeaths(country_drop);
             ArrayList<String> highestDeathDayState = jdbc.highestDeathDayState(country_drop, startDate, endDate);
-            // ArrayList<Float> countryDeathRate = jdbc.countryDeathRate(country_drop);
 
                 html = html + "<div id='results-flex-container'>";
 
@@ -128,10 +143,10 @@ public class StateDeaths implements Handler {
                 html = html + "</div>";
 
                 html = html + "<div id='div1'>";
-                    ArrayList<Float> stateDeathsDateRange = jdbc.getDeathsDateRangeState(startDate, endDate, country_drop);
-                        float noDeathsDateRange = stateDeathsDateRange.get(0);
-                        float noCasesDateRange = stateDeathsDateRange.get(1);
-                        float deathRateDateRange = noDeathsDateRange / noCasesDateRange * 100;
+                    ArrayList<Integer> stateDeathsDateRange = jdbc.getDeathsDateRangeState(startDate, endDate, country_drop);
+                        int noDeathsDateRange = stateDeathsDateRange.get(0);
+                        int noCasesDateRange = stateDeathsDateRange.get(1);
+                        double deathRateDateRange = noDeathsDateRange * 1.0 / noCasesDateRange * 100;
                         
                     html = html + "<p>Total deaths in date range: </p>";
                     html = html + noDeathsDateRange;
@@ -157,10 +172,11 @@ public class StateDeaths implements Handler {
                 html = html + "</div>";
                         
                 html = html + "<div id='div4'>";
-                    
-                    html = html + "<p>Mortality rate in date range: </p>";
-                    
-                        html = html + deathRateDateRange + "%";
+                
+                        double deathRate2d = Math.round(deathRateDateRange*100.0)/100.0;
+                        html = html + "<p>Mortality rate in date range: </p>";
+                        html = html + deathRate2d;
+                        html = html + "%<br>";
                     
                     html = html + "</div>";
             
