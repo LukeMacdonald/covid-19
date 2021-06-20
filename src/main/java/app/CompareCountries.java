@@ -115,22 +115,47 @@ public class CompareCountries implements Handler {
         //creates output on page with data
         else {
 
-            ArrayList<String> similarDeathRate = jdbc.getSimilarDeathRate(country_drop);
-            ArrayList<String> highestDeathDay = jdbc.highestDeathDay(country_drop);
+            ArrayList<String> similarDeathRate = jdbc.getSimilarDeathRate(country_drop, startDate, endDate);
+            ArrayList<String> similarHighestDeaths = jdbc.similarHighestDeaths(country_drop, startDate, endDate);
+            ArrayList<String> similarTotalDeathsCountry = jdbc.similarTotalDeathsCountry(country_drop, startDate, endDate);
 
                 html = html + "<div id='results-flex-container'>";
+
+                //this provides an explaination at the top of the results div as to what the data below represents
+                html = html + "<div id='divInfo' style='width:80%; border:none; background-color:transparent;'>";
+                    html = html + "<h2>Similar Countries to " + country_drop + "</h2>";
+                    html = html + "<h5>The below results display COVID-19 stats similar to those of " + country_drop
+                                    + "</h5>";
+                html = html + "</div>";
+
                 html = html + "<div id='div1'>";
-                    //total deaths recorded by selected country
-                    html = html + "<p>3 Most Similar Mortality Rates: </p>";
+                    //similar death rates to selected country within time period
+                    html = html + "<p style='font-weight:bolder'>3 Most similar mortality rates: </p>";
                     
                     for (int i=0; i < similarDeathRate.size(); i=i+2){
 
                         float deathRate = Float.parseFloat(similarDeathRate.get(i+1));
                         double deathRate2d = Math.round(deathRate*100.0)/100.0;
-                        html = html + similarDeathRate.get(i);
-                        html = html + ": ";
+                        html = html + "<p style='font-weight:bold; margin:5px;'>" + similarDeathRate.get(i) + ":</p>";
                         html = html + deathRate2d;
                         html = html + "%<br>";
+                    }
+
+
+
+                html = html + "</div>";
+
+                html = html + "<div id='div2'>";
+                    //closest highest death day
+                    html = html + "<p style='font-weight:bolder'>3 Most similar highest death day: </p>";
+                    
+                    for (int i=0; i < similarHighestDeaths.size(); i=i+3){
+
+                        String maxNoDeaths = similarHighestDeaths.get(i+1);
+                        String maxDeathDate = similarHighestDeaths.get(i+2);
+                        html = html + "<p style='font-weight:bold; margin:5px;'>" + similarHighestDeaths.get(i) + ":</p>";
+                        html = html + maxNoDeaths + " deaths <br>on " + maxDeathDate;
+                        html = html + "<br>";
                     }
                     //TODO: take a look at what Luke said in the teams to get the similar values working
 
@@ -139,20 +164,18 @@ public class CompareCountries implements Handler {
 
                 html = html + "</div>";
 
-                html = html + "<div id='div2'>";
-
-                        ArrayList<Float> countryDeathsDateRange = jdbc.getDeathsDateRange(startDate, endDate, country_drop);
-                            float noDeathsDateRange = countryDeathsDateRange.get(0);
-                            float noCasesDateRange = countryDeathsDateRange.get(1);
-                            float deathRateDateRange = noDeathsDateRange / noCasesDateRange * 100;
-                                                        
-                    html = html + "<p>Similar infections per million: </p>";
+                html = html + "<div id='div3'>";
+                    //similar total deaths
+                    html = html + "<p style='font-weight:bolder'>3 Most similar total deaths: </p>";
                     
-                        html = html + noDeathsDateRange;
+                    for (int i=0; i < similarTotalDeathsCountry.size(); i=i+2) {
+                        html = html + "<p style='font-weight:bold; margin:5px;'>" + similarTotalDeathsCountry.get(i) + ":</p>";
+                        html = html + similarTotalDeathsCountry.get(i+1) + " deaths";
+                    }  
+                        
                     
-                    html = html + "<p>Similar max daily infections: </p>";
-                    
-                        html = html + deathRateDateRange + "%";
+                    html = html + "</div>";
+                        
                     
                     html = html + "</div>";
         }   

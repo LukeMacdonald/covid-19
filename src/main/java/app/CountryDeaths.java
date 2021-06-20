@@ -103,6 +103,8 @@ public class CountryDeaths implements Handler {
 
         //gets form input through post
         String country_drop = context.formParam("country_drop");   
+        String startDate = context.formParam("startDate");
+        String endDate = context.formParam("endDate"); 
         
         //if no country is selected, no output is displayed on the page
         if(country_drop == null){
@@ -113,7 +115,7 @@ public class CountryDeaths implements Handler {
         else {
 
             // ArrayList<Integer> countryTotalDeaths = jdbc.countryTotalDeaths(country_drop);
-            ArrayList<String> highestDeathDay = jdbc.highestDeathDay(country_drop);
+            ArrayList<String> highestDeathDay = jdbc.highestDeathDay(country_drop, startDate, endDate);
             // ArrayList<Float> countryDeathRate = jdbc.countryDeathRate(country_drop);
 
                 html = html + "<div id='results-flex-container'>";
@@ -126,8 +128,6 @@ public class CountryDeaths implements Handler {
                 html = html + "</div>";
 
                 html = html + "<div id='div1'>";
-                    String startDate = context.formParam("startDate");
-                    String endDate = context.formParam("endDate");
                     ArrayList<Float> countryDeathsDateRange = jdbc.getDeathsDateRange(startDate, endDate, country_drop);
                         float noDeathsDateRange = countryDeathsDateRange.get(0);
                         float noCasesDateRange = countryDeathsDateRange.get(1);
@@ -159,7 +159,7 @@ public class CountryDeaths implements Handler {
                 html = html + "<div id='div4'>";
                     
                     html = html + "<p>Mortality rate in date range: </p>";
-                    
+                        
                         html = html + deathRateDateRange + "%";
                     
                     html = html + "</div>";

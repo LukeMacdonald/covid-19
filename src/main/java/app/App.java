@@ -41,7 +41,10 @@ public class App {
         app.get(CountryDeaths.URL, new CountryDeaths());
         app.get(StateDeaths.URL, new StateDeaths());
         app.get(CompareCountries.URL, new CompareCountries());
+        app.get(CompareStates.URL, new CompareStates());
         app.get(CompareCountriesAdvanced.URL, new CompareCountriesAdvanced());
+        app.get(CompareStatesAdvanced.URL, new CompareStatesAdvanced());
+        app.get(CompareStateCountryAdvanced.URL, new CompareStateCountryAdvanced());
 
         //lukes pages
         app.post(Home.URL, new Home());
@@ -58,7 +61,11 @@ public class App {
         app.post(CountryDeaths.URL, new CountryDeaths());
         app.post(StateDeaths.URL, new StateDeaths());
         app.post(CompareCountries.URL, new CompareCountries());
+        app.post(CompareStates.URL, new CompareStates());
         app.post(CompareCountriesAdvanced.URL, new CompareCountriesAdvanced());
+        app.post(CompareStatesAdvanced.URL, new CompareStatesAdvanced());
+        app.post(CompareStateCountryAdvanced.URL, new CompareStateCountryAdvanced());
+        
     }
 
 }
