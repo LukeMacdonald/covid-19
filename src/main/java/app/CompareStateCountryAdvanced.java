@@ -48,6 +48,27 @@ public class CompareStateCountryAdvanced implements Handler {
         html = html + "}";
         html = html + "</script>";
 
+        html = html + "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>";
+        html = html + "<link href='https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css' rel='stylesheet' />";
+        html = html + "<script src='https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js'></script>";
+
+        html = html + "<script>";
+        //Creates a searchable dropdown menu
+        html = html + "$(document).ready(function(){";
+        html = html + "$('#country_drop_1').select2();";
+        html = html + "});";
+        //Creates a searchable dropdown menu
+        html = html + "$(document).ready(function(){";
+        html = html + "$('#country_drop_2').select2();";
+        html = html + "});";
+        //Function to set the end dates min value to the start dates input
+        html = html + "function updatedate() {";
+        html = html + " var firstdate = document.getElementById('startDate').value;";
+        html = html + " document.getElementById('endDate').value = '';";
+        html = html + " document.getElementById('endDate').setAttribute('min',firstdate);";
+        html = html + "}";
+        html = html + "</script>";
+
         // Add some Header information
         html = html + "<head>" + 
                "<title>Compare States: Advanced</title>" +
@@ -71,7 +92,7 @@ public class CompareStateCountryAdvanced implements Handler {
         html = html + "</div>";
         //header
         html = html + "<div class = 'title'>" + "<p style = 'font-size:12px;margin-top:-5px;text-align:left'><a href = '/'>Home</a> > <a href = '/comparecountries.html'>Compare Countries</a> > <a href='/comparestatecountryadvanced.html'>Compare State and Country: Advanced</a></p>"; 
-        html = html + "<h1>Find Similar Countries";
+        html = html + "<h1>Compare State and Country";
         html = html + "<div style='display: flex; justify-content:left;'>";
         html = html + "<button onclick=\"document.location='/comparecountries.html'\" style='margin-top:10px;font-size:16px;'; type='button'; >Find Similar States</button>";
         html = html + "</div>";

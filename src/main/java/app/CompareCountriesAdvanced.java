@@ -71,7 +71,7 @@ public class CompareCountriesAdvanced implements Handler {
         html = html + "</div>";
         //header
         html = html + "<div class = 'title'>" + "<p style = 'font-size:12px;margin-top:-5px;text-align:left'><a href = '/'>Home</a> > <a href = '/comparecountries.html'>Compare Countries</a> > <a href='/comparecountriesadvanced.html'>Compare Countries: Advanced</a></p>"; 
-        html = html + "<h1>Find Similar Countries";
+        html = html + "<h1>Compare Two Countries";
         html = html + "<div style='display: flex; justify-content:left;'>";
         html = html + "<button onclick=\"document.location='/comparecountries.html'\" style='margin-top:10px;font-size:16px;'; type='button'; >Simple Compare</button>";
         html = html + "</div>";

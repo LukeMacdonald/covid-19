@@ -325,14 +325,16 @@ body {
 }
 	#results-flex-container > div {
 		background-color: #f1f1f1;
-		border: 3px solid black;
+		/* border: 3px solid black; */
 		width: 300px;
+		padding-top:10px;
 		padding-bottom: 20px;
 		text-align: center;
 		line-height: 20px;
 		font-size: 15px;
 		border-radius: 20px;
 		margin-left: 5px;
+		margin-top:10px;
 	}
 
 /* search div on 'Country Deaths' and 'Country compare' pages */
@@ -342,35 +344,31 @@ body {
 	align-items: stretch;
 	height:65vh;
 	width:auto;
-	background-color:rgb(245, 245, 245);
-	border:2px solid #f1f1f1;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 	/* class for the location selector box used on deaths and compare pages */
 	.location-selector-2 {
 		width: auto;
-		border-radius: 15px;
 		height:auto;
 		padding-bottom:10px;
 		padding-top: 10px;
-		text-align: center;
+		text-align: left;
+		background-color: white;
 	}
-	.search-sidebar select{
-		margin-top: 5px;
-		margin-bottom: 5px;
-		width: 200px;
+	.location-selector-2 form{
+		padding-top:10px;
+		padding-left:10px;
 	}
-		.search-sidebar button,input{
+		.search-sidebar button,input,select{
 			transition-duration: 0.4s;
-			background-color: white;
-			border-width: 2px;
-			border-color: black;
 			border-radius: 10px;
 			color: black;
 			text-align: center;
 			text-decoration: none;
 			font-size: 16px;
-			margin-top: 3px;
-			margin-bottom: 3px;
+			margin-top: 5px;
+			margin-bottom: 5px;
 		}
 			.search-sidebar button:hover,input:hover {
 				background-color: #1b6b8d;

@@ -72,13 +72,13 @@ public class CompareStatesAdvanced implements Handler {
         html = html + "</div>";
         //header
         html = html + "<div class = 'title'>" + "<p style = 'font-size:12px;margin-top:-5px;text-align:left'><a href = '/'>Home</a> > <a href = '/comparecountries.html'>Compare Countries</a> > <a href='/comparestatesadvanced.html'>Compare States: Advanced</a></p>"; 
-        html = html + "<h1>Find Similar Countries";
+        html = html + "<h1>Compare Two States";
         html = html + "<div style='display: flex; justify-content:left;'>";
-        html = html + "<button onclick=\"document.location='/comparestates.html'\" style='margin-top:10px;font-size:16px;'; type='button'; >Simple Compare</button>";
+        html = html + "<button onclick=\"document.location='/comparestates.html'\" style='margin-top:10px;font-size:16px;'; type='button'; >Find Similar States</button>";
         html = html + "</div>";
         html = html + "</h1>";
         html = html + "<h5 style = 'position: relative; left: 2%; width: 600px'>Using this advanced compare form, directly compare stats and information between two states/provinces</h5>";
-        html = html + "<h5>Using this advanced compare form, directly compare stats and information between two states/provinces</h5>";
+
         html = html + "</div>";
 
         JDBCConnection jdbc = new JDBCConnection();
